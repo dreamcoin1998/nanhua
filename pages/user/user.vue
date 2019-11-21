@@ -39,6 +39,8 @@
 
 <script>
 	const app = getApp()
+	import Authorization from "../../utils/authorize.js"
+	import cookieUtil from "../../utils/cookie.js"
 	export default {
 		data() {
 			return {
@@ -82,6 +84,7 @@
 			console.log("onload")
 			// this.getUserInfoBySetting()
 			if(app.globalData.userInfo){
+				console.log(app.globalData.userInfo)
 				this.userInfo = app.globalData.userInfo
 			}
 		},
@@ -89,7 +92,29 @@
 			/*列表点击事件*/
 			// 点击跳转或者授权
 			listClick(items, index){
-				
+				this.navigato(index)
+			},
+			// 跳转页面
+			navigato(index){
+				if(index==0){
+					this.loadingAndNavigato("../authentication/authentication")
+				}
+				if(index==1){
+					this.loadingAndNavigato("../about/about")
+				}
+			},
+			loadingAndNavigato(src){
+				uni.showLoading({
+					title: "跳转中",
+					success() {
+						uni.navigateTo({
+							url: src
+						})
+					},
+					complete() {
+						uni.hideLoading()
+					}
+				})
 			},
 			/*九宫格点击事件*/
 			// 按钮变色
@@ -111,28 +136,32 @@
 				// 按钮灰变色
 				this.changeColor(true, items, index)
 			},
-			// 获取用户信息
+			
+			// 首先获取用户信息设置到globalData，然后携带信息请求服务端登陆接口并且将登录状态设置为缓存
 			onGotUserInfo(e) {
 				var that = this
 			    console.log(e.detail.userInfo)
 			    app.globalData.userInfo = e.detail.userInfo
 				that.userInfo = app.globalData.userInfo
-			    uni.login({
-			      success(res){
-			        uni.request({
-			          url: app.globalData.host + app.globalData.apiVersion + "auth/qq_login",
-			          method: "POST",
-			          data: {
-			            code: res.code,
-			            userInfo: app.globalData.userInfo
-			          },
-			          success(result){
-			            console.log(result)
-						// console.log(that)
-			          }
-			        })
-			      }
-			    })
+				that.setCookie(app)
+			},
+			// 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
+			setCookie: async function (app) {
+				var result = await Authorization.login(app)
+				console.log(result)
+				// 如果登陆成功
+				if(result.data.code==0){
+					var cookie = cookieUtil.getSessionIDFromResponse(result)
+					cookieUtil.setCookieToStorage(cookie)
+				}else{
+					this.userInfo = null
+					uni.showModal({
+						title: "登录错误",
+						content: "登录失败，请重新点击登陆",
+						showCancel: false,
+						confirmText: '确定'
+					})
+				}
 			}
 		}
 	}

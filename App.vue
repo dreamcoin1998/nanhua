@@ -1,4 +1,5 @@
 <script>
+	import Authorization from "utils/authorize.js"
 	export default {
 		globalData: {
 			userInfo: null,
@@ -8,25 +9,20 @@
 		onLaunch: function() {
 			console.log('App Launch')	
 			var that = this
-			console.log(that)
-			that.$options.getUserInfo()
+			// console.log(that.$options.globalData)
+			that.$options.getUserInfoByAuthorize()
 		},
-		// 如果用户授权，获取用户信息
-		getUserInfo(){
+		// 如果globalData里面的userInfo不存在，用户授权，获取用户信息
+		getUserInfoByAuthorize(){
 			var that = this
-			uni.getSetting({
-				success(res) {
-					console.log(res.authSetting['scope.userInfo'])
-					if(res.authSetting['scope.userInfo']){
-						uni.getUserInfo({
-							success(e) {
-								console.log(that)
-								that.globalData.userInfo = e.userInfo
-							}
-						})
-					}
+			// 全局数据没有userInfo
+			if(!that.globalData.userInfo){
+				// 如果用户已授权
+				if(Authorization.isAuthorize()){
+					// 获取用户信息存储到userInfo
+					that.globalData.userInfo = Authorization.getUserInfo()
 				}
-			})
+			}
 		},
 		onShow: function() {
 			console.log('App Show')

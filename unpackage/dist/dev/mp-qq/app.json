@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/authentication/authentication",
     "pages/index/index",
     "pages/fangle/fangle",
     "pages/treasure/treasure",
@@ -8,7 +7,8 @@
     "pages/about/about",
     "pages/myCollection/myCollection",
     "pages/myWorkOrder/myWorkOrder",
-    "pages/myFriends/myFriends"
+    "pages/myFriends/myFriends",
+    "pages/authentication/authentication"
   ],
   "window": {
     "navigationBarTextStyle": "white",

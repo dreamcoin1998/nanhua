@@ -20,12 +20,14 @@
 		<!-- 登录按钮 -->
 		<view class="co-login">
 			<button class="login-button" open-type="getUserInfo" @getuserinfo="onLogin"></button>
-			<image src="../../static/login.png" mode="" class="login-image"></image>
 		</view>
 	</view>
 </template>
 
 <script>
+	const app = getApp()
+	import isAuthorize from "utils/authorize.js"
+	import getUserInfo from "utils/authorize.js"
 	export default {
 		data() {
 			return {
@@ -43,9 +45,23 @@
 				console.log(event.target.value)
 				this.password = event.target.value
 			},
-			// 如果用户尚未授权先提醒用户授权
-			onLogin(){
-				
+			// 如果信息不为空则请求后端
+			onLogin(e){
+				var that = this
+				app.globalData.userInfo = e.userInfo
+				// 如果不为空
+				if(that.username && that.password){
+					// 请求后端
+					console.log('request')
+				}else{
+					console.log('unAll')
+					uni.showModal({
+						title: '信息不全',
+						content: '请填写完整信息',
+						showCancel: false,
+						confirmText: '确定'
+					});
+				}
 			}
 		}
 	}
@@ -110,13 +126,7 @@
 	height: 150rpx;
 	width: 150rpx;
 	margin: 0 auto;
-}
-.login-image{
-	position: absolute;
-	border-radius: 50%;
-	height: 150rpx;
-	width: 150rpx;
-	left: 300rpx;
-	top: 0;
+	background-image: url("../../static/login.png");
+	background-repeat: round;
 }
 </style>
