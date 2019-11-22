@@ -4,15 +4,18 @@
 
 // 判断用户是否授权
 function isAuthorize(){
-	uni.getSetting({
-		success(res) {
-			console.log(res.authSetting['scope.userInfo'])
-			if(res.authSetting['scope.userInfo']){
-				return true
-			}else{
-				return false
+	return new Promise((resolve, reject) => {
+		uni.getSetting({
+			success(res) {
+				console.log(res.authSetting['scope.userInfo'])
+				if(res.authSetting['scope.userInfo']){
+					console.log("已授权")
+					resolve(true)
+				}else{
+					resolve(false)
+				}
 			}
-		}
+		})
 	})
 }
 
@@ -43,11 +46,13 @@ function Login(app){
 
 // 获取用户信息
 function getUserInfo(){
-	uni.getUserInfo({
-		success(e) {
-			console.log(e.userInfo)
-			return e.userInfo
-		}
+	return new Promise((resolve, reject) => {
+		uni.getUserInfo({
+			success(e) {
+				console.log(e.userInfo)
+				resolve(e.userInfo)
+			}
+		})
 	})
 }
 

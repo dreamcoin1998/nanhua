@@ -1578,16 +1578,19 @@ uni$1;exports.default = _default;
 
 // 判断用户是否授权
 function isAuthorize() {
-  uni.getSetting({
-    success: function success(res) {
-      console.log(res.authSetting['scope.userInfo']);
-      if (res.authSetting['scope.userInfo']) {
-        return true;
-      } else {
-        return false;
-      }
-    } });
+  return new Promise(function (resolve, reject) {
+    uni.getSetting({
+      success: function success(res) {
+        console.log(res.authSetting['scope.userInfo']);
+        if (res.authSetting['scope.userInfo']) {
+          console.log("已授权");
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      } });
 
+  });
 }
 
 // 用户登录：将前端获取到的信息请求服务端
@@ -1617,12 +1620,14 @@ function Login(app) {
 
 // 获取用户信息
 function getUserInfo() {
-  uni.getUserInfo({
-    success: function success(e) {
-      console.log(e.userInfo);
-      return e.userInfo;
-    } });
+  return new Promise(function (resolve, reject) {
+    uni.getUserInfo({
+      success: function success(e) {
+        console.log(e.userInfo);
+        resolve(e.userInfo);
+      } });
 
+  });
 }
 
 module.exports = {

@@ -19,10 +19,15 @@
 			if(!that.globalData.userInfo){
 				// 如果用户已授权
 				if(Authorization.isAuthorize()){
-					// 获取用户信息存储到userInfo
-					that.globalData.userInfo = Authorization.getUserInfo()
+					console.log("运行")
+					that.getUserInfoAndstorage()
 				}
 			}
+		},
+		// 同步获取用户数据并存储到globalData.serInfo
+		getUserInfoAndstorage: async function () {
+			// 获取用户信息存储到userInfo
+			this.globalData.userInfo = await Authorization.getUserInfo()
 		},
 		onShow: function() {
 			console.log('App Show')

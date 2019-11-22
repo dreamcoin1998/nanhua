@@ -83,6 +83,7 @@
 		onLoad() {
 			console.log("onload")
 			// this.getUserInfoBySetting()
+			console.log(app.globalData.userInfo)
 			if(app.globalData.userInfo){
 				console.log(app.globalData.userInfo)
 				this.userInfo = app.globalData.userInfo
