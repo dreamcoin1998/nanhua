@@ -26,8 +26,8 @@
 
 <script>
 	const app = getApp()
-	import isAuthorize from "utils/authorize.js"
-	import getUserInfo from "utils/authorize.js"
+	import cookies from '../../vendor/weapp-cookie/dist/weapp-cookie'
+	import cookieUtil from "../../utils/cookie.js"
 	export default {
 		data() {
 			return {
@@ -47,13 +47,43 @@
 			},
 			// 如果信息不为空则请求后端
 			onLogin(e){
+				uni.showLoading({
+					title: "登录中"
+				})
 				var that = this
 				app.globalData.userInfo = e.userInfo
 				// 如果不为空
 				if(that.username && that.password){
 					// 请求后端
 					console.log('request')
+					let openid = uni.getStorageSync('openid')
+					// console.log("sessionid=" + cookies.get('sessionid'))
+					uni.requestWithCookie({
+						url: app.globalData.host + app.globalData.apiVersion + "auth/yonghu_yz/" + openid + '/',
+						method: "PUT",
+						data: {
+							UserName: that.username,
+							Password: that.password
+						},
+						success: function (res) {
+							console.log(res)
+							uni.hideLoading()
+							if(!res.data.code){
+								app.globalData.userInfo = res.data.data
+								uni.showToast({
+									title:"验证成功"
+								})
+								uni.navigateBack()
+							}else{
+								uni.showToast({
+									title: "验证失败",
+									icon: "none"
+								})
+							}
+						}
+					})
 				}else{
+					uni.hideLoading()
 					console.log('unAll')
 					uni.showModal({
 						title: '信息不全',

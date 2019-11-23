@@ -10,9 +10,9 @@ function isAuthorize(){
 				console.log(res.authSetting['scope.userInfo'])
 				if(res.authSetting['scope.userInfo']){
 					console.log("已授权")
-					resolve(true)
+					resolve(res.authSetting['scope.userInfo'])
 				}else{
-					resolve(false)
+					resolve(0)
 				}
 			}
 		})
@@ -23,6 +23,7 @@ function isAuthorize(){
 // 封装成同步请求
 function Login(app){
 	return new Promise((resolve, reject) => {
+		// console.log(app.globalData.userInfo)
 		uni.login({
 			success(res){
 				uni.request({
@@ -36,7 +37,7 @@ function Login(app){
 						resolve(result);
 					},
 					fail: (err) => {
-						reject('err')
+						reject(false)
 					}
 				})
 			}
@@ -56,8 +57,24 @@ function getUserInfo(){
 	})
 }
 
+// 从服务端获取用户信息
+function getUserInfoFromServer(app){
+	return new Promise((resolve, reject) => {
+		uni.requestWithCookie({
+			url: app.globalData.host + app.globalData.apiVersion + 'auth/yonghu_info/',
+			success(res){
+				console.log(res)
+				if(res.statusCode == 200){
+					resolve(res.data.results[0])
+				}
+			}
+		})
+	})
+}
+
 module.exports = {
 	isAuthorize: isAuthorize,
 	getUserInfo: getUserInfo,
-	login: Login
+	login: Login,
+	getUserInfoFromServer: getUserInfoFromServer
 }

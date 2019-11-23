@@ -1,4 +1,5 @@
 <script>
+	import './vendor/weapp-cookie/dist/weapp-cookie'
 	import Authorization from "utils/authorize.js"
 	export default {
 		globalData: {
@@ -17,17 +18,22 @@
 			var that = this
 			// 全局数据没有userInfo
 			if(!that.globalData.userInfo){
-				// 如果用户已授权
-				if(Authorization.isAuthorize()){
-					console.log("运行")
-					that.getUserInfoAndstorage()
-				}
+				that.isAuth()
+			}
+		},
+		isAuth: async function () {
+			// 如果用户已授权
+			if(await Authorization.isAuthorize()){
+				console.log("运行")
+				this.getUserInfoAndstorage()
 			}
 		},
 		// 同步获取用户数据并存储到globalData.serInfo
 		getUserInfoAndstorage: async function () {
-			// 获取用户信息存储到userInfo
-			this.globalData.userInfo = await Authorization.getUserInfo()
+			var userInfo = await Authorization.getUserInfoFromServer(this)
+			this.globalData.userInfo = userInfo
+			uni.setStorageSync('openid', userInfo.openid)
+			// this.globalData.userInfo = await Authorization.getUserInfo()
 		},
 		onShow: function() {
 			console.log('App Show')

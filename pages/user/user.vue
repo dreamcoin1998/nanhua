@@ -5,7 +5,7 @@
 			<view class="nickNamePosition big-white-bold">
 				{{userInfo? userInfo.nickName : "未授权"}}
 			</view>
-			<view class="statusPosition small-white-bold" v-if="userInfo">(身份未认证)</view>
+			<view class="statusPosition small-white-bold" v-if="!userInfo.is_auth">(身份未认证)</view>
 			<view class="avatarPosition" v-if="userInfo">
 				<image :src="userInfo.avatarUrl" mode="" class="avatar-image"></image>
 				<button open-type="getUserInfo" @getuserinfo="onGotUserInfo" class="avatar-button"></button>
@@ -39,6 +39,7 @@
 
 <script>
 	const app = getApp()
+	import cookies from '../../vendor/weapp-cookie/dist/weapp-cookie'
 	import Authorization from "../../utils/authorize.js"
 	import cookieUtil from "../../utils/cookie.js"
 	export default {
@@ -79,15 +80,16 @@
 		},
 		onShow() {
 			console.log("onshow")
-		},
-		onLoad() {
-			console.log("onload")
-			// this.getUserInfoBySetting()
 			console.log(app.globalData.userInfo)
 			if(app.globalData.userInfo){
 				console.log(app.globalData.userInfo)
 				this.userInfo = app.globalData.userInfo
 			}
+		},
+		onLoad() {
+			console.log("onload")
+			// this.getUserInfoBySetting()
+			// console.log(app.globalData.userInfo)
 		},
 		methods: {
 			/*列表点击事件*/
@@ -141,9 +143,9 @@
 			// 首先获取用户信息设置到globalData，然后携带信息请求服务端登陆接口并且将登录状态设置为缓存
 			onGotUserInfo(e) {
 				var that = this
-			    console.log(e.detail.userInfo)
+			    // console.log(e.detail.userInfo)
 			    app.globalData.userInfo = e.detail.userInfo
-				that.userInfo = app.globalData.userInfo
+				// that.userInfo = app.globalData.userInfo
 				that.setCookie(app)
 			},
 			// 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
@@ -151,9 +153,15 @@
 				var result = await Authorization.login(app)
 				console.log(result)
 				// 如果登陆成功
-				if(result.data.code==0){
-					var cookie = cookieUtil.getSessionIDFromResponse(result)
-					cookieUtil.setCookieToStorage(cookie)
+				if(result){
+					console.log(result.data.data.openid)
+					// 将openid存入缓存
+					uni.setStorageSync('openid', result.data.data.openid)
+					app.globalData.userInfo = result.data.data
+					this.userInfo = app.globalData.userInfo
+					uni.showToast({
+						title: '登陆成功'
+					})
 				}else{
 					this.userInfo = null
 					uni.showModal({
