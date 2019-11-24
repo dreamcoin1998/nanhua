@@ -6,6 +6,7 @@
 				{{userInfo? userInfo.nickName : "未授权"}}
 			</view>
 			<view class="statusPosition small-white-bold" v-if="!userInfo.is_auth">(身份未认证)</view>
+			<view class="statusPosition small-white-bold" v-if="userInfo.is_auth">是个真正的南华人</view>
 			<view class="avatarPosition" v-if="userInfo">
 				<image :src="userInfo.avatarUrl" mode="" class="avatar-image"></image>
 				<button open-type="getUserInfo" @getuserinfo="onGotUserInfo" class="avatar-button"></button>
@@ -100,12 +101,24 @@
 			// 跳转页面
 			navigato(index){
 				if(index==0){
-					this.loadingAndNavigato("../authentication/authentication")
+					// 已经验证过的不可验证
+					if(this.userInfo.is_auth){
+						uni.showModal({
+							title: '您已经验证过',
+							content: "不要重复验证哟",
+							confirmText: '知道了',
+							showCancel: false
+							
+						})
+					}else{
+						this.loadingAndNavigato("../authentication/authentication")
+					}
 				}
 				if(index==1){
 					this.loadingAndNavigato("../about/about")
 				}
 			},
+			// 页面加载和跳转
 			loadingAndNavigato(src){
 				uni.showLoading({
 					title: "跳转中",
@@ -127,12 +140,18 @@
 				gridList[index].status = bool
 				that.gridList = gridList
 			},
-			// 用户松开点击
+			// 待开发提示
+			waitDev(){
+				uni.showToast({
+					title: "功能尚待开发"
+				})
+			},
+			// 用户松开点击，跳转
 			gridEndClick(items, index){
 				// 按钮变回白色
 				this.changeColor(false, items, index)
-				// 页面跳转
-				
+				// 页面跳转（功能尚待开发）
+				this.waitDev()
 			},
 			// 用户点击态
 			gridClick(items, index){
@@ -143,14 +162,17 @@
 			// 首先获取用户信息设置到globalData，然后携带信息请求服务端登陆接口并且将登录状态设置为缓存
 			onGotUserInfo(e) {
 				var that = this
+				uni.showLoading({
+					title: "登录中"
+				})
 			    // console.log(e.detail.userInfo)
-			    app.globalData.userInfo = e.detail.userInfo
+			    var userInfo = e.detail.userInfo
 				// that.userInfo = app.globalData.userInfo
-				that.setCookie(app)
+				that.setCookie(app, userInfo)
 			},
 			// 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
-			setCookie: async function (app) {
-				var result = await Authorization.login(app)
+			setCookie: async function (app, userInfo) {
+				var result = await Authorization.login(app, userInfo)
 				console.log(result)
 				// 如果登陆成功
 				if(result){
@@ -159,11 +181,13 @@
 					uni.setStorageSync('openid', result.data.data.openid)
 					app.globalData.userInfo = result.data.data
 					this.userInfo = app.globalData.userInfo
+					uni.hideLoading()
 					uni.showToast({
 						title: '登陆成功'
 					})
 				}else{
 					this.userInfo = null
+					uni.hideLoading()
 					uni.showModal({
 						title: "登录错误",
 						content: "登录失败，请重新点击登陆",

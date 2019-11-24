@@ -200,8 +200,9 @@ var app = getApp();var _default = { data: function data() {return { username: nu
               uni.navigateBack();
             } else {
               uni.showToast({
-                title: "验证失败",
-                icon: "none" });
+                title: res.data.msg,
+                icon: "none",
+                duration: 2000 });
 
             }
           } });

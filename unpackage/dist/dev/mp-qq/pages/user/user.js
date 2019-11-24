@@ -163,6 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));
 var _authorize = _interopRequireDefault(__webpack_require__(/*! ../../utils/authorize.js */ 16));
 var _cookie = _interopRequireDefault(__webpack_require__(/*! ../../utils/cookie.js */ 46));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
@@ -204,8 +205,8 @@ var _cookie = _interopRequireDefault(__webpack_require__(/*! ../../utils/cookie.
 //
 //
 //
-var app = getApp();var _default = { data: function data() {return { gridList: [{ text: "我的收藏", src: "../../static/collection.png", status: false }, { text: "我的工单", src: "../../static/workorder.png", status: false }, { text: "我的约伴", src: "../../static/friends.png", status: false }], pageList: [{ text: "身份认证", src: "/static/auth.png", openType: "" }, { text: "关于我们", src: "/static/about.png", openType: "" }, { text: "推荐给好友", src: "/static/share.png", openType: "share" }], userInfo: null, tip: "点击授权" };}, onShow: function onShow() {console.log("onshow");console.log(app.globalData.userInfo);
-    if (app.globalData.userInfo) {
+//
+var app = getApp();var _default = { data: function data() {return { gridList: [{ text: "我的收藏", src: "../../static/collection.png", status: false }, { text: "我的工单", src: "../../static/workorder.png", status: false }, { text: "我的约伴", src: "../../static/friends.png", status: false }], pageList: [{ text: "身份认证", src: "/static/auth.png", openType: "" }, { text: "关于我们", src: "/static/about.png", openType: "" }, { text: "推荐给好友", src: "/static/share.png", openType: "share" }], userInfo: null, tip: "点击授权" };}, onShow: function onShow() {console.log("onshow");console.log(app.globalData.userInfo);if (app.globalData.userInfo) {
       console.log(app.globalData.userInfo);
       this.userInfo = app.globalData.userInfo;
     }
@@ -224,7 +225,18 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
     // 跳转页面
     navigato: function navigato(index) {
       if (index == 0) {
-        this.loadingAndNavigato("../authentication/authentication");
+        // 已经验证过的不可验证
+        if (this.userInfo.is_auth) {
+          uni.showModal({
+            title: '您已经验证过',
+            content: "不要重复验证哟",
+            confirmText: '知道了',
+            showCancel: false });
+
+
+        } else {
+          this.loadingAndNavigato("../authentication/authentication");
+        }
       }
       if (index == 1) {
         this.loadingAndNavigato("../about/about");
@@ -267,14 +279,17 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
     // 首先获取用户信息设置到globalData，然后携带信息请求服务端登陆接口并且将登录状态设置为缓存
     onGotUserInfo: function onGotUserInfo(e) {
       var that = this;
+      uni.showLoading({
+        title: "登录中" });
+
       // console.log(e.detail.userInfo)
-      app.globalData.userInfo = e.detail.userInfo;
+      var userInfo = e.detail.userInfo;
       // that.userInfo = app.globalData.userInfo
-      that.setCookie(app);
+      that.setCookie(app, userInfo);
     },
     // 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
-    setCookie: function () {var _setCookie = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(app) {var result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                  _authorize.default.login(app));case 2:result = _context.sent;
+    setCookie: function () {var _setCookie = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(app, userInfo) {var result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                  _authorize.default.login(app, userInfo));case 2:result = _context.sent;
                 console.log(result);
                 // 如果登陆成功
                 if (result) {
@@ -283,18 +298,20 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
                   uni.setStorageSync('openid', result.data.data.openid);
                   app.globalData.userInfo = result.data.data;
                   this.userInfo = app.globalData.userInfo;
+                  uni.hideLoading();
                   uni.showToast({
                     title: '登陆成功' });
 
                 } else {
                   this.userInfo = null;
+                  uni.hideLoading();
                   uni.showModal({
                     title: "登录错误",
                     content: "登录失败，请重新点击登陆",
                     showCancel: false,
                     confirmText: '确定' });
 
-                }case 5:case "end":return _context.stop();}}}, _callee, this);}));function setCookie(_x) {return _setCookie.apply(this, arguments);}return setCookie;}() } };exports.default = _default;
+                }case 5:case "end":return _context.stop();}}}, _callee, this);}));function setCookie(_x, _x2) {return _setCookie.apply(this, arguments);}return setCookie;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-qq/dist/index.js */ 1)["default"]))
 
 /***/ }),

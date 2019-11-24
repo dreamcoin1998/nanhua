@@ -4,7 +4,7 @@
 	export default {
 		globalData: {
 			userInfo: null,
-			host: "http://127.0.0.1:8000/",
+			host: "http://2792162wb2.zicp.vip:37952/",
 			apiVersion: "v1.0/"
 		},
 		onLaunch: function() {

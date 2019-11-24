@@ -21,7 +21,7 @@ function isAuthorize(){
 
 // 用户登录：将前端获取到的信息请求服务端
 // 封装成同步请求
-function Login(app){
+function Login(app, userInfo){
 	return new Promise((resolve, reject) => {
 		// console.log(app.globalData.userInfo)
 		uni.login({
@@ -31,7 +31,7 @@ function Login(app){
 					method: "POST",
 					data: {
 						code: res.code,
-						userInfo: app.globalData.userInfo
+						userInfo: userInfo
 					},
 					success(result){
 						resolve(result);
