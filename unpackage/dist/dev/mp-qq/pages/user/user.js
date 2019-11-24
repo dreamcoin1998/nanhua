@@ -242,6 +242,7 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
         this.loadingAndNavigato("../about/about");
       }
     },
+    // 页面加载和跳转
     loadingAndNavigato: function loadingAndNavigato(src) {
       uni.showLoading({
         title: "跳转中",
@@ -263,12 +264,18 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
       gridList[index].status = bool;
       that.gridList = gridList;
     },
-    // 用户松开点击
+    // 待开发提示
+    waitDev: function waitDev() {
+      uni.showToast({
+        title: "功能尚待开发" });
+
+    },
+    // 用户松开点击，跳转
     gridEndClick: function gridEndClick(items, index) {
       // 按钮变回白色
       this.changeColor(false, items, index);
-      // 页面跳转
-
+      // 页面跳转（功能尚待开发）
+      this.waitDev();
     },
     // 用户点击态
     gridClick: function gridClick(items, index) {
