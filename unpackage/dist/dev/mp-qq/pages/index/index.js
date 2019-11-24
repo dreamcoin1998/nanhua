@@ -122,7 +122,39 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -131,17 +163,133 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-var _default =
-{
-  data: function data() {
-    return {
-      title: 'Hello' };
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var app = getApp();var _default = { data: function data() {return { days: [{ weekday: "周日", dates: '', isToday: false }, { weekday: "周一", dates: '', isToday: false }, { weekday: '周二', dates: '', isToday: false }, { weekday: '周三', dates: '', isToday: false }, { weekday: '周四', dates: '', isToday: false }, { weekday: '周五', dates: '', isToday: false }, { weekday: '周六', dates: '',
+        isToday: false }],
+
+      classTimes: [{
+        nthClass: "1",
+        time: "8:20" },
+      {
+        nthClass: "2",
+        time: "9:15" },
+      {
+        nthClass: "3",
+        time: "10:20" },
+      {
+        nthClass: "4",
+        time: "11:15" },
+      {
+        nthClass: "5",
+        time: "14:30" },
+      {
+        nthClass: "6",
+        time: "15:25" },
+      {
+        nthClass: "7",
+        time: "16:30" },
+      {
+        nthClass: "8",
+        time: "17:25" },
+      {
+        nthClass: "9",
+        time: "19:30" },
+      {
+        nthClass: "10",
+        time: "20:25" }] };
+
 
   },
   onLoad: function onLoad() {
+    // 渲染星期几和日期
+    var that = this;
+    var date = new Date();
+    var weekday = new Date().getDay(); // 距离周日有几天
+    var strDate = date.getDate(); // 当前日期
+    strDate = strDate - weekday; // 本周日日期
+    for (var t = 0; t < 7; t++) {
+      that.days[t].dates = strDate;
+      strDate++;
+    }
+    that.days[weekday].isToday = true;
+    // console.log(Boolean(uni.getStorageSync('timeTable')))
+    // 获取课表缓存
+    var timeTable = uni.getStorageSync('timeTable');
+    if (timeTable) {
+      // 解析渲染课表
+      console.log(JSON.parse(timeTable));
+    } else {
+      // 课表不存在
+      uni.showModal({
+        title: "尚未导入课表",
+        content: "是否现在导入课表",
+        success: function success(res) {
+          uni.showLoading({
+            title: '导入中' });
 
+          if (res.confirm) {
+            // 如果尚未登陆
+            if (!app.globalData.userInfo) {
+              uni.hideLoading();
+              uni.showToast({
+                icon: "none",
+                title: "您尚未授权登录",
+                duration: 2000 });
+
+            } else {
+              uni.requestWithCookie({
+                url: app.globalData.host + app.globalData.apiVersion + "api/timetable/" + "?TimeName=2019-2020-1&openid=" + app.globalData.userInfo.openid,
+                success: function success(e) {
+                  console.log('信息：', e);
+                  if (e.statusCode == 200 && e.data.code == 0) {
+                    if (e.data.data) {
+                      // 解析课表
+
+                      // 存入缓存
+                      var data = JSON.stringify(e.data.data);
+                      console.log(data);
+                      uni.setStorageSync('timeTable', data);
+                      uni.hideLoading();
+                      uni.showToast({
+                        title: "导入成功" });
+
+                    } else {
+                      uni.hideLoading();
+                      uni.showToast({
+                        title: "导入失败" });
+
+                    }
+                  }
+                } });
+
+            }
+          }
+        } });
+
+    }
   },
   methods: {} };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-qq/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
