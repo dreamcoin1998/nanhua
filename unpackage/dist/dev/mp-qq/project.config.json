@@ -5,15 +5,15 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"es6": false,
+		"es6": true,
 		"postcss": false,
-		"minified": false,
+		"minified": true,
 		"newFeature": true,
-		"remoteDebugLogEnable": false,
-		"uploadWithSourceMap": true,
 		"nodeModules": true,
 		"autoAudits": true,
-		"uglifyFileName": true
+		"uploadWithSourceMap": true,
+		"uglifyFileName": true,
+		"remoteDebugLogEnable": false
 	},
 	"compileType": "miniprogram",
 	"projectname": "nanhua",

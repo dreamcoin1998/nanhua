@@ -2,7 +2,16 @@
 	<view>
 		<!-- 顶部栏 -->
 		<view class="top">
+			<uni-drawer :visible="drawer" @close="closeDrawer">
+			    <view style="padding:30rpx;">
+			        <view class="uni-title">抽屉式导航</view>
+			    </view>
+			</uni-drawer>
+			
 			<view class="naviBar">
+				<view class="drawer" @click="displayDrewer">
+					<text class="drawer-text">第14周 &gt;</text>
+				</view>
 				<text class="naviBarText">课程表</text>
 			</view>
 		</view>
@@ -21,19 +30,26 @@
 			</view>
 		</view>
 		<!-- 课程 -->
-		<!-- 星期一 -->
-		<view class="monday">
-			<text class="class"></text>
+		<view class="co-classes">
+			<view class="co-class" v-for="(kc, index) in kcs">
+				<view class="class" :style="kc ? 'background: linear-gradient(#F88536, #F8C336);' : ''">
+					{{kc}}
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniDrawer from "../../components/uni-drawer/uni-drawer.vue"
 	const app = getApp()
 	import cookies from '../../vendor/weapp-cookie/dist/weapp-cookie'
 	export default {
+		components: {uniDrawer},
 		data() {
 			return {
+				drawer: false,
+				week: "14",
 				days: [{
 					weekday: "周日",
 					dates: '',
@@ -93,7 +109,9 @@
 				},{
 					nthClass: "10",
 					time: "20:25"
-				}]
+				}],
+				weeks: 13,
+				kcs: []
 			}
 		},
 		onLoad() {
@@ -114,16 +132,19 @@
 			if(timeTable){
 				// 解析渲染课表
 				console.log(JSON.parse(timeTable))
+				var parseTimeTable = JSON.parse(timeTable)
+				var kcs = that.jiexiTimeTable(parseTimeTable)
+				that.kcs = kcs
 			}else{
 				// 课表不存在
 				uni.showModal({
 					title: "尚未导入课表",
 					content: "是否现在导入课表",
 					success(res) {
-						uni.showLoading({
-							title: '导入中'
-						})
 						if(res.confirm){
+							uni.showLoading({
+								title: '导入中'
+							})
 							// 如果尚未登陆
 							if(!app.globalData.userInfo){
 								uni.hideLoading()
@@ -140,7 +161,8 @@
 										if(e.statusCode==200 && e.data.code==0){
 											if(e.data.data){
 												// 解析课表
-												
+												var kcs = that.jiexiTimeTable(e.data.data)
+												that.kcs = kcs
 												// 存入缓存
 												var data = JSON.stringify(e.data.data)
 												console.log(data)
@@ -165,25 +187,127 @@
 			}
 		},
 		methods: {
-
+			// 解析课表
+			jiexiTimeTable(parseTimeTable){
+				var classes = []
+				var resolve = []
+				for(var index = 0; index < parseTimeTable.length; index++){
+					let timeClass = parseTimeTable[index]
+					let classTime = Object.keys(timeClass)
+					let someClasses = Object.values(timeClass)
+					let weekTimeClass = []
+					for(var id = 0; id < someClasses[0].length; id++){
+						let data = {}
+						let weekday = Object.keys(someClasses[0][id])
+						let classes = Object.values(someClasses[0][id])
+						if(classes[0][3].search('14') != -1){
+							data[weekday[0]] = classes[0]
+							weekTimeClass.push(data)
+						}
+					}
+					let dt = {}
+					dt[classTime[0]] = weekTimeClass
+					resolve.push(dt)
+				}
+				console.log(resolve)
+				var kcs = []
+				var w = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+				for(var x = 0; x < resolve.length; x++){
+					var cles = Object.values(resolve[x])[0]
+					// console.log(cles)
+					var weeks = []
+					var kc = []
+					for(var e = 0; e < cles.length; e++){
+						var kecheng = Object.values(cles[e])[0]
+						kc.push(kecheng)
+						var week = Object.keys(cles[e])[0]
+						weeks.push(week)
+					}
+					console.log(kc)
+					// console.log(weeks)
+					for(var t = 0; t < 7; t++){
+						var txt = ''
+						for(var y = 0; y < kc.length; y++){
+							if(weeks[y]==w[t]){
+								txt += kc[y][0] + '\n@' + kc[y][4]
+							}
+						}
+						kcs.push(txt)
+					}
+				}
+				console.log(kcs)
+				return kcs
+			},
+			displayDrewer(){
+				var that = this
+				that.drawer = true
+			},
+			closeDrawer(){
+				var that = this
+				that.drawer = false
+			}
 		}
 	}
 </script>
 
 <style>
+.drawer{
+	height: 60rpx;
+	width: 150rpx;
+	border-radius: 0 30rpx 30rpx 0;
+	background-color: #333333;
+	position: absolute;
+	left: 0;
+	/* top: 15rpx; */
+}
+.drawer-text{
+	line-height: 60rpx;
+	margin: 0 auto;
+	color: #FFFFFF;
+}
+.co-classes{
+	display: inline-block;
+	width: 675rpx;
+	/* height: 440rpx; */
+	float: right;
+	/* position: relative; */
+	/* background-color: #333333; */
+}
+.co-class{
+	display: inline-block;
+	width: calc(100% / 7);
+	height: 230rpx;
+	/* position: absolute; */
+	/* background-color: #39B54A; */
+	position: relative;
+}
+.class{
+	position: absolute;
+	display: inline-block;
+	width: 95%;
+	height: 220rpx;
+	margin: 0 auto;
+	/* 渐变色 */
+	/* background: linear-gradient(#F88536, #F8C336); */
+	text-align: center;
+	color: #FFFFFF;
+	/* font-weight: 700; */
+	font-size: 25rpx;
+	border-radius: 5%;
+}
 .co-left{
 	display: inline-block;
 	width: 75rpx;
 	/* height: 100rpx; */
 }
 .class-time{
-	height: 100rpx;
+	height: 115rpx;
 	text-align: center;
 	position: relative;
 }
 .nth-class{
 	display: block;
-	line-height: 100rpx;
+	line-height: 115rpx;
 	font-size: 36rpx;
 }
 .time{
@@ -192,7 +316,7 @@
 	margin: 0 auto;
 	position: absolute;
 	font-size: 22rpx;
-	top: 70rpx;
+	top: 80rpx;
 }
 .co-weekday{
 	margin-left: 75rpx;
@@ -226,6 +350,7 @@
 	position: relative;
 }
 .naviBar{
+	/* background-color: #39B54A; */
 	position: absolute;
 	top: 82rpx;
 	width: 100%;

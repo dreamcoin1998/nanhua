@@ -1,17 +1,61 @@
 
+.drawer{
+	height: 60rpx;
+	width: 150rpx;
+	border-radius: 0 30rpx 30rpx 0;
+	background-color: #333333;
+	position: absolute;
+	left: 0;
+	/* top: 15rpx; */
+}
+.drawer-text{
+	line-height: 60rpx;
+	margin: 0 auto;
+	color: #FFFFFF;
+}
+.co-classes{
+	display: inline-block;
+	width: 675rpx;
+	/* height: 440rpx; */
+	float: right;
+	/* position: relative; */
+	/* background-color: #333333; */
+}
+.co-class{
+	display: inline-block;
+	width: calc(100% / 7);
+	height: 230rpx;
+	/* position: absolute; */
+	/* background-color: #39B54A; */
+	position: relative;
+}
+.class{
+	position: absolute;
+	display: inline-block;
+	width: 95%;
+	height: 220rpx;
+	margin: 0 auto;
+	/* 渐变色 */
+	/* background: linear-gradient(#F88536, #F8C336); */
+	text-align: center;
+	color: #FFFFFF;
+	/* font-weight: 700; */
+	font-size: 25rpx;
+	border-radius: 5%;
+}
 .co-left{
 	display: inline-block;
 	width: 75rpx;
 	/* height: 100rpx; */
 }
 .class-time{
-	height: 100rpx;
+	height: 115rpx;
 	text-align: center;
 	position: relative;
 }
 .nth-class{
 	display: block;
-	line-height: 100rpx;
+	line-height: 115rpx;
 	font-size: 36rpx;
 }
 .time{
@@ -20,7 +64,7 @@
 	margin: 0 auto;
 	position: absolute;
 	font-size: 22rpx;
-	top: 70rpx;
+	top: 80rpx;
 }
 .co-weekday{
 	margin-left: 75rpx;
@@ -54,6 +98,7 @@
 	position: relative;
 }
 .naviBar{
+	/* background-color: #39B54A; */
 	position: absolute;
 	top: 82rpx;
 	width: 100%;

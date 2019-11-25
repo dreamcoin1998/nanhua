@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "课程表",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-drawer": "/components/uni-drawer/uni-drawer"
+  }
 }

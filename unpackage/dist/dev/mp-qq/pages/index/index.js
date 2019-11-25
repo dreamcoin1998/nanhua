@@ -154,37 +154,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var app = getApp();var _default = { data: function data() {return { days: [{ weekday: "周日", dates: '', isToday: false }, { weekday: "周一", dates: '', isToday: false }, { weekday: '周二', dates: '', isToday: false }, { weekday: '周三', dates: '', isToday: false }, { weekday: '周四', dates: '', isToday: false }, { weekday: '周五', dates: '', isToday: false }, { weekday: '周六', dates: '',
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniDrawer = function uniDrawer() {return __webpack_require__.e(/*! import() | components/uni-drawer/uni-drawer */ "components/uni-drawer/uni-drawer").then(__webpack_require__.bind(null, /*! ../../components/uni-drawer/uni-drawer.vue */ 88));};var app = getApp();var _default =
+{
+  components: { uniDrawer: uniDrawer },
+  data: function data() {
+    return {
+      drawer: false,
+      week: "14",
+      days: [{
+        weekday: "周日",
+        dates: '',
+        isToday: false },
+      {
+        weekday: "周一",
+        dates: '',
+        isToday: false },
+      {
+        weekday: '周二',
+        dates: '',
+        isToday: false },
+      {
+        weekday: '周三',
+        dates: '',
+        isToday: false },
+      {
+        weekday: '周四',
+        dates: '',
+        isToday: false },
+      {
+        weekday: '周五',
+        dates: '',
+        isToday: false },
+      {
+        weekday: '周六',
+        dates: '',
         isToday: false }],
 
       classTimes: [{
@@ -216,8 +232,10 @@ var app = getApp();var _default = { data: function data() {return { days: [{ wee
         time: "19:30" },
       {
         nthClass: "10",
-        time: "20:25" }] };
+        time: "20:25" }],
 
+      weeks: 13,
+      kcs: [] };
 
   },
   onLoad: function onLoad() {
@@ -238,16 +256,19 @@ var app = getApp();var _default = { data: function data() {return { days: [{ wee
     if (timeTable) {
       // 解析渲染课表
       console.log(JSON.parse(timeTable));
+      var parseTimeTable = JSON.parse(timeTable);
+      var kcs = that.jiexiTimeTable(parseTimeTable);
+      that.kcs = kcs;
     } else {
       // 课表不存在
       uni.showModal({
         title: "尚未导入课表",
         content: "是否现在导入课表",
         success: function success(res) {
-          uni.showLoading({
-            title: '导入中' });
-
           if (res.confirm) {
+            uni.showLoading({
+              title: '导入中' });
+
             // 如果尚未登陆
             if (!app.globalData.userInfo) {
               uni.hideLoading();
@@ -264,7 +285,8 @@ var app = getApp();var _default = { data: function data() {return { days: [{ wee
                   if (e.statusCode == 200 && e.data.code == 0) {
                     if (e.data.data) {
                       // 解析课表
-
+                      var kcs = that.jiexiTimeTable(e.data.data);
+                      that.kcs = kcs;
                       // 存入缓存
                       var data = JSON.stringify(e.data.data);
                       console.log(data);
@@ -288,7 +310,66 @@ var app = getApp();var _default = { data: function data() {return { days: [{ wee
 
     }
   },
-  methods: {} };exports.default = _default;
+  methods: {
+    // 解析课表
+    jiexiTimeTable: function jiexiTimeTable(parseTimeTable) {
+      var classes = [];
+      var resolve = [];
+      for (var index = 0; index < parseTimeTable.length; index++) {
+        var timeClass = parseTimeTable[index];
+        var classTime = Object.keys(timeClass);
+        var someClasses = Object.values(timeClass);
+        var weekTimeClass = [];
+        for (var id = 0; id < someClasses[0].length; id++) {
+          var data = {};
+          var weekday = Object.keys(someClasses[0][id]);
+          var _classes = Object.values(someClasses[0][id]);
+          if (_classes[0][3].search('14') != -1) {
+            data[weekday[0]] = _classes[0];
+            weekTimeClass.push(data);
+          }
+        }
+        var dt = {};
+        dt[classTime[0]] = weekTimeClass;
+        resolve.push(dt);
+      }
+      console.log(resolve);
+      var kcs = [];
+      var w = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      for (var x = 0; x < resolve.length; x++) {
+        var cles = Object.values(resolve[x])[0];
+        // console.log(cles)
+        var weeks = [];
+        var kc = [];
+        for (var e = 0; e < cles.length; e++) {
+          var kecheng = Object.values(cles[e])[0];
+          kc.push(kecheng);
+          var week = Object.keys(cles[e])[0];
+          weeks.push(week);
+        }
+        console.log(kc);
+        // console.log(weeks)
+        for (var t = 0; t < 7; t++) {
+          var txt = '';
+          for (var y = 0; y < kc.length; y++) {
+            if (weeks[y] == w[t]) {
+              txt += kc[y][0] + '\n@' + kc[y][4];
+            }
+          }
+          kcs.push(txt);
+        }
+      }
+      console.log(kcs);
+      return kcs;
+    },
+    displayDrewer: function displayDrewer() {
+      var that = this;
+      that.drawer = true;
+    },
+    closeDrawer: function closeDrawer() {
+      var that = this;
+      that.drawer = false;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-qq/dist/index.js */ 1)["default"]))
 
 /***/ }),
