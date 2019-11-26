@@ -1,4 +1,32 @@
 
+.co-inputTimaTable{
+	position: relative;
+}
+.number{
+	position: absolute;
+	left: 100rpx; 
+	top: 50rpx;
+}
+.inputTimetable{
+	position: absolute;
+	width: 260rpx;
+	top: 130rpx;
+	left: 100rpx;
+}
+.nth-week{
+	position: relative;
+	margin-top: 40rpx;
+	font-size: 32rpx;
+	line-height: 50rpx;
+}
+.welcome{
+	padding:30rpx; 
+	background-color: #78acff; 
+	margin-top: 100rpx; 
+	width: 100%; 
+	/* border-radius: 0 25% 25% 0; */
+	color: #FFFFFF;
+}
 .drawer{
 	height: 60rpx;
 	width: 150rpx;
@@ -30,6 +58,7 @@
 	position: relative;
 }
 .class{
+	opacity: 0.8;
 	position: absolute;
 	display: inline-block;
 	width: 95%;
@@ -41,7 +70,7 @@
 	color: #FFFFFF;
 	/* font-weight: 700; */
 	font-size: 25rpx;
-	border-radius: 5%;
+	border-radius: 20rpx;
 }
 .co-left{
 	display: inline-block;
@@ -70,9 +99,9 @@
 	margin-left: 75rpx;
 	height: 75rpx;
 	width: 675rpx;
-	border-bottom: #78acff;
-	border-bottom-style: solid;
-	border-bottom-width: 1.5rpx;
+	/* border-bottom: #78acff; */
+	/* border-bottom-style: solid; */
+	/* border-bottom-width: 1.5rpx; */
 }
 .weekdays{
 	display: inline-block;

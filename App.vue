@@ -8,6 +8,8 @@
 			apiVersion: "v1.0/"
 		},
 		onLaunch: function() {
+			uni.setStorageSync('SundayDate', '2019-11-17')
+			uni.setStorageSync('nthWeek', '13')
 			console.log('App Launch')	
 			var that = this
 			// console.log(that.$options.globalData)

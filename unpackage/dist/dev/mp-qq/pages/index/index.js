@@ -90,6 +90,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.kcs, function(kc, index) {
+    var m0 = _vm.background(index)
+    return {
+      $orig: _vm.__get_orig(kc),
+      m0: m0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -167,13 +183,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniDrawer = function uniDrawer() {return __webpack_require__.e(/*! import() | components/uni-drawer/uni-drawer */ "components/uni-drawer/uni-drawer").then(__webpack_require__.bind(null, /*! ../../components/uni-drawer/uni-drawer.vue */ 88));};var app = getApp();var _default =
+
+
+
+
+
+
+
+
+var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/weapp-cookie/dist/weapp-cookie */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniNumberBox = function uniNumberBox() {return __webpack_require__.e(/*! import() | components/uni-number-box/uni-number-box */ "components/uni-number-box/uni-number-box").then(__webpack_require__.bind(null, /*! ../../components/uni-number-box/uni-number-box.vue */ 83));};var uniDrawer = function uniDrawer() {return __webpack_require__.e(/*! import() | components/uni-drawer/uni-drawer */ "components/uni-drawer/uni-drawer").then(__webpack_require__.bind(null, /*! ../../components/uni-drawer/uni-drawer.vue */ 90));};var app = getApp();var _default =
 {
-  components: { uniDrawer: uniDrawer },
+  components: {
+    uniDrawer: uniDrawer,
+    uniNumberBox: uniNumberBox },
+
   data: function data() {
     return {
+      colorArrays: ["#85B8CF", "#90C652", "#D8AA5A", "#FC9F9D", "#0A9A84", "#61BC69", "#12AEF3", "#E29AAD"],
+      background: function background(index) {
+        var that = this;
+        return that.colorArrays[parseInt(Math.random() * 8) % index];
+      },
       drawer: false,
-      week: "14",
+      week: "0",
       days: [{
         weekday: "周日",
         dates: '',
@@ -234,83 +266,146 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
         nthClass: "10",
         time: "20:25" }],
 
-      weeks: 13,
       kcs: [] };
 
   },
   onLoad: function onLoad() {
-    // 渲染星期几和日期
     var that = this;
-    var date = new Date();
-    var weekday = new Date().getDay(); // 距离周日有几天
-    var strDate = date.getDate(); // 当前日期
-    strDate = strDate - weekday; // 本周日日期
-    for (var t = 0; t < 7; t++) {
-      that.days[t].dates = strDate;
-      strDate++;
-    }
-    that.days[weekday].isToday = true;
-    // console.log(Boolean(uni.getStorageSync('timeTable')))
-    // 获取课表缓存
-    var timeTable = uni.getStorageSync('timeTable');
-    if (timeTable) {
-      // 解析渲染课表
-      console.log(JSON.parse(timeTable));
-      var parseTimeTable = JSON.parse(timeTable);
-      var kcs = that.jiexiTimeTable(parseTimeTable);
-      that.kcs = kcs;
-    } else {
-      // 课表不存在
-      uni.showModal({
-        title: "尚未导入课表",
-        content: "是否现在导入课表",
-        success: function success(res) {
-          if (res.confirm) {
-            uni.showLoading({
-              title: '导入中' });
-
-            // 如果尚未登陆
-            if (!app.globalData.userInfo) {
-              uni.hideLoading();
-              uni.showToast({
-                icon: "none",
-                title: "您尚未授权登录",
-                duration: 2000 });
-
-            } else {
-              uni.requestWithCookie({
-                url: app.globalData.host + app.globalData.apiVersion + "api/timetable/" + "?TimeName=2019-2020-1&openid=" + app.globalData.userInfo.openid,
-                success: function success(e) {
-                  console.log('信息：', e);
-                  if (e.statusCode == 200 && e.data.code == 0) {
-                    if (e.data.data) {
-                      // 解析课表
-                      var kcs = that.jiexiTimeTable(e.data.data);
-                      that.kcs = kcs;
-                      // 存入缓存
-                      var data = JSON.stringify(e.data.data);
-                      console.log(data);
-                      uni.setStorageSync('timeTable', data);
-                      uni.hideLoading();
-                      uni.showToast({
-                        title: "导入成功" });
-
-                    } else {
-                      uni.hideLoading();
-                      uni.showToast({
-                        title: "导入失败" });
-
-                    }
-                  }
-                } });
-
+    // 取出缓存本周日的日期
+    var Sunday = uni.getStorageSync('SundayDate');
+    // 取出缓存第几周
+    var week = uni.getStorageSync('nthWeek');
+    if (week && Sunday) {
+      var sunday = new Date(Sunday);
+      var today = new Date();
+      var difValue = (today - sunday) / (1000 * 60 * 60 * 24);
+      // 设置第几周
+      if (difValue < 7) {
+        that.week = week;
+      } else {
+        var delta = parseInt(difValue / 7);
+        if (delta > 25) {
+          delta = 25;
+        }
+        that.week = (parseInt(week) + delta).toString();
+      }
+      var strDate = today.getDate();
+      var weekday = new Date().getDay(); // 距离周日有几天
+      // 渲染星期几和日期
+      var todayTime = today.getTime();
+      var targetSunday = new Date(todayTime - 1000 * 60 * 60 * 24 * weekday);
+      var targetTime = targetSunday.getTime();
+      // strDate = strDate - weekday // 本周日日期
+      for (var t = 0; t < 7; t++) {
+        var tgSunday = new Date(targetTime + 1000 * 60 * 60 * 24 * t);
+        that.days[t].dates = tgSunday.getDate();
+        strDate++;
+      }
+      that.days[weekday].isToday = true;
+      // console.log(Boolean(uni.getStorageSync('timeTable')))
+      // 获取课表缓存
+      var timeTable = uni.getStorageSync('timeTable');
+      if (timeTable) {
+        // 解析渲染课表
+        // console.log(JSON.parse(timeTable))
+        var parseTimeTable = JSON.parse(timeTable);
+        var kcs = that.jiexiTimeTable(parseTimeTable);
+        that.kcs = kcs;
+      } else {
+        // 课表不存在
+        uni.showModal({
+          title: "尚未导入课表",
+          content: "是否现在导入课表",
+          success: function success(res) {
+            if (res.confirm) {
+              that.inputTimeTable();
             }
-          }
-        } });
+          } });
 
+      }
     }
   },
   methods: {
+    // 导入课表
+    inputTimeTable: function inputTimeTable() {
+      if (uni.getStorageSync('timeTable')) {
+        uni.showToast({
+          title: '已导入',
+          icon: "none" });
+
+      } else {
+        var that = this;
+        uni.showLoading({
+          title: '导入中' });
+
+        // 如果尚未登陆
+        if (!app.globalData.userInfo) {
+          uni.hideLoading();
+          uni.showToast({
+            icon: "none",
+            title: "您尚未授权登录",
+            duration: 2000 });
+
+        } else {
+          uni.requestWithCookie({
+            url: app.globalData.host + app.globalData.apiVersion + "api/timetable/" + "?TimeName=2019-2020-1&openid=" + app.globalData.userInfo.openid,
+            success: function success(e) {
+              // console.log('信息：', e)
+              if (e.statusCode == 200 && e.data.code == 0) {
+                if (e.data.data) {
+                  // 解析课表
+                  var kcs = that.jiexiTimeTable(e.data.data);
+                  that.kcs = kcs;
+                  // 存入缓存
+                  var data = JSON.stringify(e.data.data);
+                  // console.log(data)
+                  uni.setStorageSync('timeTable', data);
+                  uni.hideLoading();
+                  uni.showToast({
+                    title: "导入成功" });
+
+                } else {
+                  uni.hideLoading();
+                  uni.showToast({
+                    title: "导入失败" });
+
+                }
+              }
+            } });
+
+        }
+      }
+    },
+    // 切换周数
+    changeWeek: function changeWeek(e) {
+      // 取出缓存本周日的日期
+      var Sunday = uni.getStorageSync('SundayDate');
+      // 取出缓存第几周
+      var week = uni.getStorageSync('nthWeek');
+      var timeTable = uni.getStorageSync('timeTable');
+      if (timeTable) {
+        uni.showLoading({
+          title: '切换中' });
+
+        var parseTimeTable = JSON.parse(timeTable);
+        console.log(parseTimeTable);
+        var that = this;
+        that.week = e.toString();
+        var kcs = that.jiexiTimeTable(parseTimeTable);
+        that.kcs = kcs;
+        // 渲染日期
+        var delta = e - week;
+        var weekdaySet = new Date(Sunday);
+        var targetTime = parseInt(weekdaySet.getTime() + 1000 * 60 * 60 * 24 * 7 * delta);
+        // var targetSunday = new Date(targetTime)
+        // var strDate = targetSunday.getDate()
+        for (var t = 0; t < 7; t++) {
+          var targetSunday = new Date(targetTime + 1000 * 60 * 60 * 24 * t);
+          that.days[t].dates = targetSunday.getDate();
+        }
+        uni.hideLoading();
+      }
+    },
     // 解析课表
     jiexiTimeTable: function jiexiTimeTable(parseTimeTable) {
       var classes = [];
@@ -324,16 +419,19 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
           var data = {};
           var weekday = Object.keys(someClasses[0][id]);
           var _classes = Object.values(someClasses[0][id]);
-          if (_classes[0][3].search('14') != -1) {
-            data[weekday[0]] = _classes[0];
-            weekTimeClass.push(data);
+          var weekList = _classes[0][3].split(' ');
+          for (var h = 0; h < weekList.length; h++) {
+            if (this.week == weekList[h]) {
+              data[weekday[0]] = _classes[0];
+              weekTimeClass.push(data);
+            }
           }
         }
         var dt = {};
         dt[classTime[0]] = weekTimeClass;
         resolve.push(dt);
       }
-      console.log(resolve);
+      // console.log(resolve)
       var kcs = [];
       var w = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       for (var x = 0; x < resolve.length; x++) {
@@ -347,7 +445,7 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
           var week = Object.keys(cles[e])[0];
           weeks.push(week);
         }
-        console.log(kc);
+        // console.log(kc)
         // console.log(weeks)
         for (var t = 0; t < 7; t++) {
           var txt = '';
@@ -359,13 +457,15 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
           kcs.push(txt);
         }
       }
-      console.log(kcs);
+      // console.log(kcs)
       return kcs;
     },
+    // 显示抽屉
     displayDrewer: function displayDrewer() {
       var that = this;
       that.drawer = true;
     },
+    // 关闭抽屉
     closeDrawer: function closeDrawer() {
       var that = this;
       that.drawer = false;

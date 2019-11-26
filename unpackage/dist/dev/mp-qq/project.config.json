@@ -5,18 +5,18 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"es6": true,
+		"es6": false,
 		"postcss": false,
-		"minified": true,
+		"minified": false,
 		"newFeature": true,
+		"remoteDebugLogEnable": false,
+		"uploadWithSourceMap": true,
 		"nodeModules": true,
 		"autoAudits": true,
-		"uploadWithSourceMap": true,
-		"uglifyFileName": true,
-		"remoteDebugLogEnable": false
+		"uglifyFileName": true
 	},
 	"compileType": "miniprogram",
-	"projectname": "nanhua",
+	"projectname": "在南华",
 	"qqappid": "1110027966",
 	"scripts": {
 		"beforeCompile": "",
