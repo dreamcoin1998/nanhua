@@ -1,5 +1,5 @@
 
-.sWhole_box  .login_box.data-v-5fef5f54{
+.sWhole_box  .login_box.data-v-1deb9167{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -18,11 +18,11 @@
 	font-weight: 500;
 	margin-bottom: 10px;
 }
-.login_box image.data-v-5fef5f54{
+.login_box image.data-v-1deb9167{
 	width: 95px;
 	height: 95px;
 }
-.sWhole_box .score_container.data-v-5fef5f54{
+.sWhole_box .score_container.data-v-1deb9167{
 	padding: 3px 15px;
 	height: 39px;
 	line-height: 32px;
@@ -35,11 +35,11 @@
 	display: flex;
 	vertical-align: bottom;
 }
-.score_container input.data-v-5fef5f54{
+.score_container input.data-v-1deb9167{
 	margin-left: 35px;
 	margin-top: 4px;
 }
-.sWhole_box .btn_type.data-v-5fef5f54{
+.sWhole_box .btn_type.data-v-1deb9167{
 	margin-top: 23px;
 	width: 120px;
 	background: #0081FF;

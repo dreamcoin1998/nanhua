@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="sWhole_box">
 		<view class="score_container">
 			<text>类型</text>
 			<input type="text" placeholder="招领或报失" :value="losType" />
@@ -35,10 +35,11 @@
 		<view class="take_photo">
 			<text style="font-size: 80px;" class="iconfont icon-tubiaozhizuomoban"  @click="takePhoto"></text>
 			<view :class="isActive?'active':''">
-				<camera device-position="back" flash="off" @error="error" style="width: 100%; height: 300px;"></camera>
+				<!-- <camera device-position="back" flash="off" @error="error" style="width: 100%; height: 300px;"></camera> -->
 			</view>
 		</view>
 		<button type="primary">发布</button>
+		
 	</view>
 </template>
 

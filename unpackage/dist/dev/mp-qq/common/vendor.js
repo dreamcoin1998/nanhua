@@ -7573,9 +7573,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!****************************!*\
-  !*** F:/nanhua/pages.json ***!
-  \****************************/
+/*!**********************************************!*\
+  !*** C:/Users/CCY/Desktop/nanhua/pages.json ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8480,20 +8480,20 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 
 /***/ }),
 /* 7 */
-/*!*********************************************!*\
-  !*** F:/nanhua/pages.json?{"type":"style"} ***!
-  \*********************************************/
+/*!***************************************************************!*\
+  !*** C:/Users/CCY/Desktop/nanhua/pages.json?{"type":"style"} ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/cetQuery/cetQuery": {}, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarTitleText": "", "navigationBarBackgroundColor": "#1ABD6C" }, "pages/treasure/scoreSystem/scoreSystem": { "navigationBarTitleText": "" }, "pages/treasure/treasure": { "navigationStyle": "custom" }, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/index/index": { "navigationBarTitleText": "课程表" }, "pages/treasure/library/library": { "navigationBarTitleText": "" }, "pages/treasure/bookSearch/bookSearch": { "navigationBarTitleText": "" }, "pages/treasure/loginLibrary/loginLibrary": { "navigationBarTitleText": "" }, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": {}, "pages/myWorkOrder/myWorkOrder": {}, "pages/myFriends/myFriends": {}, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/treasure/treasure": { "navigationStyle": "custom" }, "pages/treasure/lostThing/lostPublish/lostPublish": { "navigationBarTitleText": "发布信息" }, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/cetQuery/cetQuery": { "navigationBarTitleText": "" }, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarTitleText": "", "navigationBarBackgroundColor": "#1ABD6C" }, "pages/treasure/scoreSystem/scoreSystem": { "navigationBarTitleText": "" }, "pages/treasure/honestyUmbrella/honestyUmbrella": { "navigationBarTitleText": "" }, "pages/index/index": { "navigationBarTitleText": "课程表" }, "pages/treasure/library/library": { "navigationBarTitleText": "" }, "pages/treasure/bookSearch/bookSearch": { "navigationBarTitleText": "" }, "pages/treasure/repair/repair": { "navigationBarTitleText": "" }, "pages/treasure/loginLibrary/loginLibrary": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail2/phoneDetail2": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail3/phoneDetail3": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail4/phoneDetail4": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail5/phoneDetail5": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail6/phoneDetail6": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneDetail1/phoneDetail1": { "navigationBarTitleText": "" }, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": { "navigationBarTitleText": "" }, "pages/myWorkOrder/myWorkOrder": { "navigationBarTitleText": "" }, "pages/myFriends/myFriends": { "navigationBarTitleText": "" }, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": { "navigationBarTitleText": "" }, "pages/treasure/schoolWiFi/schoolWiFi": { "navigationBarTitleText": "" }, "pages/treasure/schoolMap/schoolMap": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneList": { "navigationBarTitleText": "" }, "pages/treasure/schoolProgram/schoolProgram": {}, "pages/treasure/schoolPicture/schoolPicture": {}, "pages/treasure/scoreSystem/queryByscore/queryByscore": {}, "pages/treasure/scoreSystem/seatOrder/seatOrder": { "navigationBarBackgroundColor": "#4CD964" }, "pages/treasure/scoreSystem/carrerTest/carrerTest": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
-/*!********************************************!*\
-  !*** F:/nanhua/pages.json?{"type":"stat"} ***!
-  \********************************************/
+/*!**************************************************************!*\
+  !*** C:/Users/CCY/Desktop/nanhua/pages.json?{"type":"stat"} ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
