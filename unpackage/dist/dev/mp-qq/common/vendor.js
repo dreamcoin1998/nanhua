@@ -8467,7 +8467,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom" }, "pages/fangle/fangle": { "navigationBarTitleText": "在南华" }, "pages/treasure/treasure": { "navigationBarTitleText": "工具箱" }, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": {}, "pages/myWorkOrder/myWorkOrder": {}, "pages/myFriends/myFriends": {}, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证" } }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom" }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/cetQuery/cetQuery": {}, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarTitleText": "", "navigationBarBackgroundColor": "#1ABD6C" }, "pages/treasure/scoreSystem/scoreSystem": { "navigationBarTitleText": "" }, "pages/treasure/treasure": {}, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/treasure/library/library": { "navigationBarTitleText": "" }, "pages/treasure/bookSearch/bookSearch": { "navigationBarTitleText": "" }, "pages/treasure/loginLibrary/loginLibrary": { "navigationBarTitleText": "" }, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": {}, "pages/myWorkOrder/myWorkOrder": {}, "pages/myFriends/myFriends": {}, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
@@ -11969,19 +11969,7 @@ function normalizeComponent (
 /* 31 */,
 /* 32 */,
 /* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */
+/* 34 */
 /*!*************************************************************!*\
   !*** C:/Users/Administrator/Desktop/nanhua/utils/cookie.js ***!
   \*************************************************************/
