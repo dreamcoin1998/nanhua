@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="sWhole_box">
 		<view class="score_container detail_type" v-for="(item,i) in phoneType" @click="phoneTypeDetail(i)">
 			<text>{{item}}</text>
 		</view>

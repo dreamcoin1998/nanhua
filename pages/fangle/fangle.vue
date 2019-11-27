@@ -91,6 +91,11 @@
 					duration: 1000
 				})
 			}
+		},
+		onLoad() {
+			uni.showModal({
+				content:'功能还未完善'
+			})
 		}
 	}
 </script>

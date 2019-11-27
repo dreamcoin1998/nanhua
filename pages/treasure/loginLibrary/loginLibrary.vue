@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<login-module></login-module>
+		<login-module :loginTitle="loginTitle"></login-module>
 	</view>
 </template>
 
@@ -10,7 +10,8 @@
 		data() {
 			return {
 				stuNum: '',
-				password: ''
+				password: '',
+				loginTitle: '登录图书馆'
 			}
 		},
 		methods: {
