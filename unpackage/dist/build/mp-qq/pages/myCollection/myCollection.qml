@@ -1,1 +1,1 @@
-<view></view>
+<view>collection</view>

@@ -270,6 +270,7 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
 
   },
   onLoad: function onLoad() {
+    uni.showShareMenu();
     var that = this;
     // 取出缓存本周日的日期
     var Sunday = uni.getStorageSync('SundayDate');
@@ -305,6 +306,7 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
       // console.log(Boolean(uni.getStorageSync('timeTable')))
       // 获取课表缓存
       var timeTable = uni.getStorageSync('timeTable');
+      console.log(timeTable);
       if (timeTable) {
         // 解析渲染课表
         // console.log(JSON.parse(timeTable))
@@ -328,10 +330,12 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
   methods: {
     // 导入课表
     inputTimeTable: function inputTimeTable() {
+      console.log(uni.getStorageSync('timeTable') ? '有缓存' : '没缓存');
       if (uni.getStorageSync('timeTable')) {
-        uni.showToast({
-          title: '已导入',
-          icon: "none" });
+        uni.showModal({
+          title: "已经导入",
+          showCancel: false,
+          confirmText: "知道了" });
 
       } else {
         var that = this;
@@ -340,13 +344,15 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
 
         // 如果尚未登陆
         if (!app.globalData.userInfo) {
+          console.log('未登录');
           uni.hideLoading();
-          uni.showToast({
-            icon: "none",
+          uni.showModal({
             title: "您尚未授权登录",
-            duration: 2000 });
+            showCancel: false,
+            confirmText: "知道了" });
 
         } else {
+          console.log('登录');
           uni.requestWithCookie({
             url: app.globalData.host + app.globalData.apiVersion + "api/timetable/" + "?TimeName=2019-2020-1&openid=" + app.globalData.userInfo.openid,
             success: function success(e) {
@@ -361,15 +367,26 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
                   // console.log(data)
                   uni.setStorageSync('timeTable', data);
                   uni.hideLoading();
-                  uni.showToast({
-                    title: "导入成功" });
+                  uni.showModal({
+                    title: "导入成功",
+                    showCancel: false,
+                    confirmText: "知道了" });
 
                 } else {
                   uni.hideLoading();
-                  uni.showToast({
-                    title: "导入失败" });
+                  uni.showModal({
+                    title: "导入失败",
+                    showCancel: false,
+                    confirmText: "知道了" });
 
                 }
+              } else {
+                uni.hideLoading();
+                uni.showModal({
+                  title: "导入失败",
+                  showCancel: false,
+                  confirmText: "知道了" });
+
               }
             } });
 
@@ -414,6 +431,9 @@ var _weappCookie = _interopRequireDefault(__webpack_require__(/*! ../../vendor/w
         var timeClass = parseTimeTable[index];
         var classTime = Object.keys(timeClass);
         var someClasses = Object.values(timeClass);
+        if (!someClasses[0]) {
+          continue;
+        }
         var weekTimeClass = [];
         for (var id = 0; id < someClasses[0].length; id++) {
           var data = {};

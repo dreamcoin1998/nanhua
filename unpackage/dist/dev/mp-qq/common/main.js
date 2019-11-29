@@ -97,7 +97,8 @@ var _authorize = _interopRequireDefault(__webpack_require__(/*! utils/authorize.
 {
   globalData: {
     userInfo: null,
-    host: "http://2792162wb2.zicp.vip:37952/",
+    host: "https://qq.gaoblog.cn/",
+    // host: "http://127.0.0.1:8000/",
     apiVersion: "v1.0/" },
 
   onLaunch: function onLaunch() {

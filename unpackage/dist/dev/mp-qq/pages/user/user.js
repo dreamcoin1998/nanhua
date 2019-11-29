@@ -213,6 +213,7 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
   },
   onLoad: function onLoad() {
     console.log("onload");
+    uni.showShareMenu();
     // this.getUserInfoBySetting()
     // console.log(app.globalData.userInfo)
   },
@@ -266,8 +267,10 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
     },
     // 待开发提示
     waitDev: function waitDev() {
-      uni.showToast({
-        title: "功能尚待开发" });
+      uni.showModal({
+        title: "功能尚待开发",
+        showCancel: false,
+        confirmText: "知道了" });
 
     },
     // 用户松开点击，跳转
@@ -295,8 +298,14 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
       that.setCookie(app, userInfo);
     },
     // 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
-    setCookie: function () {var _setCookie = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(app, userInfo) {var result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                  _authorize.default.login(app, userInfo));case 2:result = _context.sent;
+    setCookie: function () {var _setCookie = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(app, userInfo) {var result;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                if (!userInfo.city || !userInfo.country || !userInfo.province) {
+                  console.log('运行');
+                  userInfo.city = '未知';
+                  userInfo.country = '未知';
+                  userInfo.province = '未知';
+                }_context.next = 3;return (
+                  _authorize.default.login(app, userInfo));case 3:result = _context.sent;
                 console.log(result);
                 // 如果登陆成功
                 if (result) {
@@ -318,7 +327,7 @@ var app = getApp();var _default = { data: function data() {return { gridList: [{
                     showCancel: false,
                     confirmText: '确定' });
 
-                }case 5:case "end":return _context.stop();}}}, _callee, this);}));function setCookie(_x, _x2) {return _setCookie.apply(this, arguments);}return setCookie;}() } };exports.default = _default;
+                }case 6:case "end":return _context.stop();}}}, _callee, this);}));function setCookie(_x, _x2) {return _setCookie.apply(this, arguments);}return setCookie;}() } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-qq/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -23,7 +23,7 @@ function isAuthorize(){
 // 封装成同步请求
 function Login(app, userInfo){
 	return new Promise((resolve, reject) => {
-		// console.log(app.globalData.userInfo)
+		console.log(userInfo)
 		uni.login({
 			success(res){
 				uni.request({
@@ -34,6 +34,8 @@ function Login(app, userInfo){
 						userInfo: userInfo
 					},
 					success(result){
+						console.log(res.code)
+						console.log(result.data)
 						resolve(result);
 					},
 					fail: (err) => {

@@ -89,6 +89,7 @@
 		},
 		onLoad() {
 			console.log("onload")
+			uni.showShareMenu()
 			// this.getUserInfoBySetting()
 			// console.log(app.globalData.userInfo)
 		},
@@ -142,8 +143,10 @@
 			},
 			// 待开发提示
 			waitDev(){
-				uni.showToast({
-					title: "功能尚待开发"
+				uni.showModal({
+					title: "功能尚待开发",
+					showCancel: false,
+					confirmText: "知道了"
 				})
 			},
 			// 用户松开点击，跳转
@@ -172,6 +175,12 @@
 			},
 			// 获取code携带userInfo同步向服务端发起登录请求，并且将cookie设置为缓存
 			setCookie: async function (app, userInfo) {
+				if(!userInfo.city || !userInfo.country || !userInfo.province){
+					console.log('运行')
+					userInfo.city = '未知'
+					userInfo.country = '未知'
+					userInfo.province = '未知'
+				}
 				var result = await Authorization.login(app, userInfo)
 				console.log(result)
 				// 如果登陆成功
