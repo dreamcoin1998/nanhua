@@ -12,11 +12,7 @@
  	box-sizing: border-box;
  	padding-bottom: 10px;
  	padding-left: 15px;
-<<<<<<< HEAD
- 	background-color: green;
-=======
  	background-color: #78acff;
->>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
  	height: 55px;
  	color: white;
  }
@@ -51,11 +47,7 @@
  	text-align: center;
  	width: 90%;
  	height: 97px;
-<<<<<<< HEAD
- 	background: #4CD964;
-=======
  	background-color: #78acff;
->>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
  	color: white;
  	font-size: 12px;
  	border-radius: 8px;
@@ -80,14 +72,10 @@
 	font-weight: 500;
 	margin-bottom: 10px;
 }
-<<<<<<< HEAD
-
-=======
 .score_text{
 	display: block;
 	width: 55px;
 }
->>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
 .login_box image{
 	width: 95px;
 	height: 95px;

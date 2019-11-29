@@ -1,9 +1,5 @@
 <template>
-<<<<<<< HEAD
-	<view>
-=======
 	<view class="sWhole_box">
->>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
 		<view class="score_container detail_type" v-for="(item,i) in phoneType" @click="phoneTypeDetail(i)">
 			<text>{{item}}</text>
 		</view>

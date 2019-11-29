@@ -104,7 +104,7 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/uni-drawer/uni-drawer":1,"components/uni-number-box/uni-number-box":1,"pages/template/loginModule":1,"components/wyj-text-code/wyj-text-code":1};
+/******/ 		var cssChunks = {"components/uni-drawer/uni-drawer":1,"components/uni-number-box/uni-number-box":1,"pages/template/lostThingModal":1,"pages/template/loginModule":1,"components/wyj-text-code/wyj-text-code":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
