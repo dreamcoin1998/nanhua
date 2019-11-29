@@ -1,5 +1,5 @@
 
-.sWhole_box  .login_box.data-v-fa0a977a{
+.sWhole_box  .login_box.data-v-33b35320{
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -18,11 +18,11 @@
 	font-weight: 500;
 	margin-bottom: 10px;
 }
-.login_box image.data-v-fa0a977a{
+.login_box image.data-v-33b35320{
 	width: 95px;
 	height: 95px;
 }
-.sWhole_box .score_container.data-v-fa0a977a{
+.sWhole_box .score_container.data-v-33b35320{
 	padding: 3px 15px;
 	height: 39px;
 	line-height: 32px;
@@ -35,18 +35,18 @@
 	display: flex;
 	vertical-align: bottom;
 }
-.score_container input.data-v-fa0a977a{
+.score_container input.data-v-33b35320{
 	margin-left: 35px;
 	margin-top: 4px;
 }
-.sWhole_box .btn_type.data-v-fa0a977a{
+.sWhole_box .btn_type.data-v-33b35320{
 	margin-top: 23px;
 	width: 120px;
 	background: #0081FF;
 	color: white;
 	border-radius: 5px;
 }
-.score_text.data-v-fa0a977a{
+.score_text.data-v-33b35320{
 	display: block;
 	width: 55px;
 }
