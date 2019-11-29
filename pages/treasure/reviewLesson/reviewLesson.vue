@@ -11,13 +11,14 @@
 			<button size="mini" type="default" @click="sharePost">生成分享</button>
 		</view>
 		<view class="lesson_btn_group">
-			<button size="mini" type="default">开始自习</button>
-			<button size="mini" type="default">自习历史</button>
+			<button size="mini" type="default" @click="startLesson">开始自习</button>
+			<button size="mini" type="default" @click="lessonHistory">自习历史</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import app from '../../../App.vue';
 	export default {
 		data() {
 			return {
@@ -42,6 +43,23 @@
 				        console.log("fail:" + JSON.stringify(err));
 				    }
 				});
+			},
+			startLesson(){
+				uni.showModal({
+					title: '自习打卡说明',
+					content: '自习过程中请保持本页面打开，系统将持续计时，手机息屏或闪退都会停止自习哦！',
+					cancelText:'取消自习',
+					confirmText: '开始自习'
+				})
+			},
+			lessonHistory(){
+				let userInfo = app.globalData.userInfo;
+				if(userInfo == null){
+					uni.showToast({
+						title:'非法用户',
+						icon: 'none'
+					})
+				}
 			}
 		},
 		onLoad() {
@@ -63,7 +81,7 @@
 		justify-content: center;
 	}
 	.lesson_container{
-		background: #1ABD6C;
+		background-color: #78acff;
 		width: 100%;
 		height: 280px;
 		border-radius: 0 0 120px 120px;

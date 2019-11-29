@@ -108,7 +108,7 @@
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/uni-drawer/uni-drawer":"components/uni-drawer/uni-drawer","components/uni-number-box/uni-number-box":"components/uni-number-box/uni-number-box","pages/template/loginModule":"pages/template/loginModule","components/wyj-text-code/wyj-text-code":"components/wyj-text-code/wyj-text-code"}[chunkId]||chunkId) + ".qss";
+/******/ 				var href = "" + ({"components/uni-drawer/uni-drawer":"components/uni-drawer/uni-drawer","components/uni-number-box/uni-number-box":"components/uni-number-box/uni-number-box","pages/template/lostThingModal":"pages/template/lostThingModal","pages/template/loginModule":"pages/template/loginModule","components/wyj-text-code/wyj-text-code":"components/wyj-text-code/wyj-text-code"}[chunkId]||chunkId) + ".qss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

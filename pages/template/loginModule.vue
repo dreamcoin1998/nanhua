@@ -1,6 +1,7 @@
 <template>
 	<view class="sWhole_box">
 		<view class="login_box">
+<<<<<<< HEAD
 			<image src="../../static/authontication.png" mode=""></image>
 			<text>{{loginTitle}}</text>
 		</view>
@@ -11,6 +12,18 @@
 		<view class="score_container">
 			<text>密码</text>
 			<input password="true" placeholder="请输入图书馆密码" :value="password" @input="inputPasswd" />
+=======
+			<image :src="imageSrc" mode=""></image>
+			<text>{{loginTitle}}</text>
+		</view>
+		<view class="score_container">
+			<text class="score_text">{{studengNumber.number}}</text>
+			<input type="text" :placeholder="studengNumber.placeHolder" :value="stuNum" @input="inputNum" />
+		</view>
+		<view class="score_container">
+			<text class="score_text">{{studengPassword.password}}</text>
+			<input password="true" :placeholder="studengPassword.placeHolder" :value="password" @input="inputPasswd" />
+>>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
 		</view>
 		<slot></slot>
 		<button class="btn_type" @click="login">{{btnText}}</button>
@@ -32,6 +45,14 @@
 			imageSrc:{
 				type: String,
 				default: '../../static/authontication.png'
+			},
+			studengNumber:{
+				type: Object,
+				default: {'number':'学号',"placeHolder":"请输入学号"}
+			},
+			studengPassword:{
+				type: Object,
+				default: {'password':'密码',"placeHolder":"请输入密码"}
 			}
 		},
 		data() {
@@ -104,5 +125,9 @@
 	background: #0081FF;
 	color: white;
 	border-radius: 5px;
+}
+.score_text{
+	display: block;
+	width: 55px;
 }
 </style>

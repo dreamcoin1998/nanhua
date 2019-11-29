@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view class="sWhole_box">
 		<view style="margin-top: 12px;" class="login_box">
-			<image src="../../../static/通讯录.png" style="height:80px;" mode=""></image>
+			<image src="../../../static/phonelist.png" style="height:80px;" mode=""></image>
 			<text>{{loginTitle}}</text>
 		</view>
 		<view class="score_container phone_container" v-for="(item,i) in phoneList" @click="phoneDetail(i)">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import loginModule from '../../template/loginModule.vue'
+	import loginModule from '../../template/loginModule.vue';
 	export default {
 		data() {
 			return {

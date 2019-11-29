@@ -793,7 +793,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7045,7 +7045,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7066,14 +7066,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7149,7 +7149,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8467,7 +8467,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom" }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/cetQuery/cetQuery": {}, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarTitleText": "", "navigationBarBackgroundColor": "#1ABD6C" }, "pages/treasure/scoreSystem/scoreSystem": { "navigationBarTitleText": "" }, "pages/treasure/treasure": {}, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/treasure/library/library": { "navigationBarTitleText": "" }, "pages/treasure/bookSearch/bookSearch": { "navigationBarTitleText": "" }, "pages/treasure/loginLibrary/loginLibrary": { "navigationBarTitleText": "" }, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": {}, "pages/myWorkOrder/myWorkOrder": {}, "pages/myFriends/myFriends": {}, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom" }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/treasure": { "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/lostThing/lostPublish/lostPublish": { "navigationBarTitleText": "发布信息" }, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/treasure/cetQuery/cetQuery": {}, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarBackgroundColor": "#78acff" }, "pages/treasure/scoreSystem/scoreSystem": {}, "pages/treasure/honestyUmbrella/honestyUmbrella": {}, "pages/treasure/library/library": {}, "pages/treasure/bookSearch/bookSearch": {}, "pages/treasure/repair/repair": {}, "pages/treasure/loginLibrary/loginLibrary": {}, "pages/treasure/phoneList/phoneDetail2/phoneDetail2": {}, "pages/treasure/phoneList/phoneDetail3/phoneDetail3": {}, "pages/treasure/phoneList/phoneDetail4/phoneDetail4": {}, "pages/treasure/phoneList/phoneDetail5/phoneDetail5": {}, "pages/treasure/phoneList/phoneDetail6/phoneDetail6": {}, "pages/treasure/phoneList/phoneDetail1/phoneDetail1": {}, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": { "navigationBarTitleText": "" }, "pages/myWorkOrder/myWorkOrder": { "navigationBarTitleText": "" }, "pages/myFriends/myFriends": { "navigationBarTitleText": "" }, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": { "navigationBarTitleText": "" }, "pages/treasure/schoolWiFi/schoolWiFi": { "navigationBarTitleText": "" }, "pages/treasure/schoolMap/schoolMap": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneList": { "navigationBarTitleText": "" }, "pages/treasure/schoolProgram/schoolProgram": {}, "pages/treasure/schoolPicture/schoolPicture": {}, "pages/treasure/scoreSystem/queryByscore/queryByscore": {}, "pages/treasure/scoreSystem/seatOrder/seatOrder": { "navigationBarBackgroundColor": "#78acff" }, "pages/treasure/scoreSystem/carrerTest/carrerTest": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */

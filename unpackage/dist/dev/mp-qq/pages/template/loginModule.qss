@@ -46,4 +46,8 @@
 	color: white;
 	border-radius: 5px;
 }
+.score_text.data-v-fa0a977a{
+	display: block;
+	width: 55px;
+}
 

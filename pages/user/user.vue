@@ -160,8 +160,7 @@
 			gridClick(items, index){
 				// 按钮灰变色
 				this.changeColor(true, items, index)
-			},
-			
+			},			
 			// 首先获取用户信息设置到globalData，然后携带信息请求服务端登陆接口并且将登录状态设置为缓存
 			onGotUserInfo(e) {
 				var that = this

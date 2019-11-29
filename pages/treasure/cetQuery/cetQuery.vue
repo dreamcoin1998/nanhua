@@ -5,12 +5,12 @@
 			<text>{{loginTitle}}</text>
 		</view>
 		<view class="score_container">
-			<text>考号</text>
-			<input type="text" placeholder="请输入15位考试或笔试准考证号" :value="stuNum" @input="inputNum" />
+			<text class="score_text">考号</text>
+			<input type="text" placeholder="请输入15位考试或笔试准考证号" :value="stuNum" />
 		</view>
 		<view class="score_container">
-			<text>姓名</text>
-			<input placeholder="超过3个字,可只输入前3个字" :value="password" @input="inputPasswd" />
+			<text class="score_text">姓名</text>
+			<input placeholder="超过3个字,可只输入前3个字" :value="password" />
 		</view>
 		<slot></slot>
 		<button class="btn_type" @click="login">{{btnText}}</button>
@@ -23,7 +23,8 @@
 			return {
 				loginTitle: '四六级查询',
 				stuNum: '',
-				password: ''
+				password: '',
+				btnText: '查询'
 			}
 		},
 		methods: {
@@ -40,8 +41,10 @@
 						content: '是否需要将图书馆密码保存到手机中，方便下次查询',
 						cancelText: '不保存',
 						confirmText: '保存'
+					});
+					uni.navigateTo({
+						url: '../cetScore.vue/cetScore.vue'
 					})
-				
 				}else{
 					uni.showModal({
 						title: '信息不全',

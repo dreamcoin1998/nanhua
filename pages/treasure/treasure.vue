@@ -11,55 +11,37 @@
 		<view class="header">
 			<swiper indicator-dots="true" indicator-color="#ccc" indicator-active-color="white" autoplay="true" bindchange="switchChange"
 			 class="head_switch">
-				<swiper-item>1</swiper-item>
-				<swiper-item>2</swiper-item>
-				<swiper-item>3</swiper-item>
+				<swiper-item>
+					<image src="../../static/11.jpg" mode=""></image>
+				</swiper-item>
+				<swiper-item>
+					<image src="../../static/15.jpg" mode=""></image>
+				</swiper-item>
+				<swiper-item>
+					<image src="../../static/16.jpg" mode=""></image>
+				</swiper-item>
 			</swiper>
 		</view>
 		<view class="main">
 			<view class="main_module">
-				<view class="module_img at_left">
+				<view class="module_img at_left" style="padding-left: 20px;">
 					<view class="module_text">
 						<view>学</view>
 						<text>在武大</text>
 					</view>
 				</view>
 				<view class="module_right at_right">
-					<view class="box" @click="library">
+					<view class="box" v-for="(item,index) in learnPage" @click="learnToPage(index)">
 						<view class="icon_box">1</view>
-						<text>图书馆</text>
-					</view>
-					<view class="box" @click="scoreManger">
-						<view class="icon_box">1</view>
-						<text>成绩管理</text>
-					</view>
-					<view class="box" @click="reviewLesson">
-						<view class="icon_box">1</view>
-						<text>自习助手</text>
-					</view>
-					<view class="box" @click="cetSystem">
-						<view class="icon_box">1</view>
-						<text>四六级</text>
+						<text>{{item}}</text>
 					</view>
 				</view>
 			</view>
 			<view class="main_module">
 				<view class="module_img at_right main_module">
-					<view class="box">
+					<view class="box" v-for="(item,index) in livePage" @click="livePageName(index)">
 						<view class="icon_box">1</view>
-						<text>校园地图</text>
-					</view>
-					<view class="box" @click="repair">
-						<view class="icon_box">1</view>
-						<text>故障报修</text>
-					</view>
-					<view class="box">
-						<view class="icon_box">1</view>
-						<text>失物招领</text>
-					</view>
-					<view class="box">
-						<view class="icon_box">1</view>
-						<text>通讯录</text>
+						<text>{{item}}</text>
 					</view>
 				</view>
 				<view class="module_right at_left">
@@ -67,6 +49,12 @@
 						<view>住</view>
 						<text>在武大</text>
 					</view>
+				</view>
+			</view>
+			<view class="treasure_box">
+				<view class="box" v-for="(item,i) in pageTypeName" :key="i" @click="ToPageName(i)">
+					<view class="icon_box">1</view>
+					<text>{{item}}</text>
 				</view>
 			</view>
 			<view class="main_module">
@@ -77,13 +65,9 @@
 					</view>
 				</view>
 				<view class="module_right at_right">
-					<view class="box">
+					<view class="box" v-for="(item,index) in playPage" @click="playPageName(index)">
 						<view class="icon_box">1</view>
-						<text>武大头像</text>
-					</view>
-					<view class="box">
-						<view class="icon_box">1</view>
-						<text>校园直播</text>
+						<text>{{item}}</text>
 					</view>
 				</view>
 			</view>
@@ -93,10 +77,15 @@
 </template>
 
 <script>
+	import app from '../../App.vue'
 	export default {
 		data() {
 			return {
-				imageSrc: [0, 1, 2, 3]
+				imageSrc: [0, 1, 2, 3],
+				learnPage: ["图书馆","成绩管理","自习助手","四六级"],
+				livePage: ["校园地图","故障报修","失物招领","通讯录"],
+				pageTypeName: ["诚信雨伞", "校园巴士", "校园网"],
+				playPage: ["南华头像", "校园直播"]
 			}
 		},
 		methods: {
@@ -117,31 +106,83 @@
 					}
 				})
 			},
-			library() {
+			learnToPage(index){
+				let url = '';
+				switch (index) {
+					case 0:
+						url = 'library/library'
+						break;
+					case 1:
+						url = 'scoreSystem/scoreSystem'
+						break;
+					case 2:
+						url = 'reviewLesson/reviewLesson'
+						break;
+					case 3:
+						url = 'cetQuery/cetQuery'
+						break;
+				}
 				uni.navigateTo({
-					url:'library/library'
+					url: url
 				})
 			},
-			scoreManger(){
+			livePageName(index){
+				let url = '';
+				switch (index) {
+					case 0:
+						url = 'schoolMap/schoolMap'
+						break;
+					case 1:
+						url = './repair/repair'
+						break;
+					case 2:
+						url = 'lostThing/lostThing'
+						break;
+					case 3:
+						url = 'phoneList/phoneList'
+						break;
+				}
 				uni.navigateTo({
-					url: 'scoreSystem/scoreSystem'
+					url: url
 				})
 			},
-			reviewLesson(){
+			
+			ToPageName(index) {
+				let url = '';
+				switch (index) {
+					case 0:
+						url = "honestyUmbrella/honestyUmbrella"
+						break;
+					case 1:
+						url = "honestyUmbrella/honestyUmbrella"
+						break;
+					case 2:
+						url = "schoolWiFi/schoolWiFi"
+						break;
+				}
 				uni.navigateTo({
-					url: 'reviewLesson/reviewLesson'
+					url: url
 				})
 			},
-			repair(){
+			playPageName(index){
+				let url = '';
+				switch (index) {
+					case 0:
+						url = 'schoolPicture/schoolPicture'
+						break;
+					case 1:
+						url = 'schoolProgram/schoolProgram'
+						break;
+				}
 				uni.navigateTo({
-					url: 'repair/repair'
-				})
-			},
-			cetSystem(){
-				uni.navigateTo({
-					url : 'cetQuery/cetQuery'
+					url: url
 				})
 			}
+		},
+		onLoad() {
+			uni.showModal({
+				content:'功能还未完善'
+			})
 		}
 	}
 </script>
@@ -157,15 +198,17 @@
 	}
 
 	.header .head_switch {
-		background: yellow;
+		height: 180px;
 	}
 
 	.main {
+		width: 94%;
 		padding: 10px;
-	}
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+	} 
 
-	.module_img {
-	}
 
 	.main_module,
 	.module_right {
@@ -186,7 +229,7 @@
 	.main_module .module_text {
 		width: 80px;
 		height: 85px;
-		background: green;
+		background-color: #78acff;
 		border-radius: 5px;
 		color: white;
 		padding: 3px 5px;
@@ -210,7 +253,7 @@
 	}
 
 	.box .icon_box {
-		background: green;
+		background-color: #78acff;
 		width: 20px;
 		height: 20px;
 		border-radius: 50%;
@@ -219,5 +262,13 @@
 		line-height: 20px;
 		font-size: 12px;
 		margin-right: 4px;
+	}
+
+	.treasure_box {
+		display: flex;
+	}
+	swiper-item image{
+		width: 100%;
+		height: 100%;
 	}
 </style>

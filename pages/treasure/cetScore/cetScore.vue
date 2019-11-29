@@ -2,6 +2,7 @@
 	<view :class="showModal || testModal?'cover':''">
 		<view :class="[showModal || testModal?'hidden':'active']">
 			<view class="cet_container">
+<<<<<<< HEAD
 				<text>姓名</text>
 				<text>{{studentName}}</text>
 			</view>
@@ -15,13 +16,32 @@
 			</view>
 			<view class="cet_container">
 				<text>笔试成绩</text>
+=======
+				<text  class="score_text">姓名</text>
+				<text>{{studentName}}</text>
+			</view>
+			<view class="cet_container">
+				<text class="score_text">学校</text>
+				<text>{{schoolName}}</text>
+			</view>
+			<view class="cet_container">
+				<text class="score_text">考试级别</text>
+				<text>{{testLevel}}</text>
+			</view>
+			<view class="cet_container">
+				<text class="score_text">笔试成绩</text>
+>>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
 				<view @click="scoreMsg">
 					<text>{{writtenRecord}}分</text>
 					<text class="iconfont icon-icon-test7"></text>
 				</view>
 			</view>
 			<view class="cet_container">
+<<<<<<< HEAD
 				<text>口试成绩</text>
+=======
+				<text class="score_text">口试成绩</text>
+>>>>>>> 413e3b45a46c5ce3edb43908bc89a81cedbb5904
 				<view @click="testMsg">
 					<text>{{testScores}}</text>
 					<text class="iconfont icon-icon-test7"></text>

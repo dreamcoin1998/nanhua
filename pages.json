@@ -15,14 +15,33 @@
 		    }
 		},
 		{
+			"path": "pages/treasure/treasure",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 		    "path" : "pages/treasure/lostThing/lostThing",
 		    "style" : {
 				"navigationBarTitleText":"失物招领"
 			}
 		},
 		{
+		    "path" : "pages/treasure/lostThing/lostPublish/lostPublish",
+		    "style" : {
+				"navigationBarTitleText":"发布信息"
+			}
+		},
+		{
+			"path": "pages/fangle/fangle",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 		    "path" : "pages/treasure/cetQuery/cetQuery",
-		    "style" : {}
+		    "style" : {
+			}
 		},
 		{
 		    "path" : "pages/treasure/cetScore/cetScore",
@@ -33,42 +52,67 @@
 		{
 		    "path" : "pages/treasure/reviewLesson/reviewLesson",
 		    "style" : {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#1ABD6C"
+				"navigationBarBackgroundColor":"#78acff"
 			}
 		},
 		{
 		    "path" : "pages/treasure/scoreSystem/scoreSystem",
 		    "style" : {
-				"navigationBarTitleText": ""
 			}
 		},
 		{
-			"path": "pages/treasure/treasure",
-			"style": {}
-		},
-		{
-			"path": "pages/fangle/fangle",
-			"style": {
-				"navigationStyle": "custom"
+		    "path" : "pages/treasure/honestyUmbrella/honestyUmbrella",
+		    "style" : {
 			}
 		},
 		{
 		    "path" : "pages/treasure/library/library",
 		    "style" : {
-				"navigationBarTitleText":""
 			}
 		},
 		{
 		    "path" : "pages/treasure/bookSearch/bookSearch",
 		    "style" : {
-				"navigationBarTitleText":""
+			}
+		},
+		{
+		    "path" : "pages/treasure/repair/repair",
+		    "style" : {
 			}
 		},
 		{
 		    "path" : "pages/treasure/loginLibrary/loginLibrary",
 		    "style" : {
-				"navigationBarTitleText":""
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail2/phoneDetail2",
+		    "style" : {
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail3/phoneDetail3",
+		    "style" : {
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail4/phoneDetail4",
+		    "style" : {
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail5/phoneDetail5",
+		    "style" : {
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail6/phoneDetail6",
+		    "style" : {
+			}
+		},
+		{
+		    "path" : "pages/treasure/phoneList/phoneDetail1/phoneDetail1",
+		    "style" : {
 			}
 		},
 		{
@@ -83,16 +127,63 @@
 	    	}
 	    },{
             "path" : "pages/myCollection/myCollection",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": ""
+			}
         },{
             "path" : "pages/myWorkOrder/myWorkOrder",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": ""
+			}
         },{
             "path" : "pages/myFriends/myFriends",
-            "style" : {}
-        }        
-		,{
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        },{
             "path" : "pages/treasure/scoreSystem/scoreLogin/scoreLogin",
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        }
+        ,{
+            "path" : "pages/treasure/schoolWiFi/schoolWiFi",
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        }
+        ,{
+            "path" : "pages/treasure/schoolMap/schoolMap",
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        },
+		{
+		    "path" : "pages/treasure/phoneList/phoneList",
+		    "style" : {
+				"navigationBarTitleText": ""
+			}
+		}
+        ,{
+            "path" : "pages/treasure/schoolProgram/schoolProgram",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/treasure/schoolPicture/schoolPicture",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/treasure/scoreSystem/queryByscore/queryByscore",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/treasure/scoreSystem/seatOrder/seatOrder",
+            "style" : {
+				"navigationBarBackgroundColor":"#78acff"
+			}
+        }
+        ,{
+            "path" : "pages/treasure/scoreSystem/carrerTest/carrerTest",
             "style" : {}
         }
     ],
@@ -125,7 +216,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#78acff",
 		"backgroundColor": "#F8F8F8"
 	}
