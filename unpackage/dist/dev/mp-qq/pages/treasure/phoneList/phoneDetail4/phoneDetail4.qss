@@ -77,14 +77,11 @@
 .navigation_grounp>.navigation {
  	display: -webkit-box;
  	display: -webkit-flex;
- 	display: -ms-flexbox;
  	display: flex;
  	-webkit-box-align: end;
  	-webkit-align-items: flex-end;
- 	    -ms-flex-align: end;
  	        align-items: flex-end;
- 	-webkit-box-sizing: border-box;
- 	        box-sizing: border-box;
+ 	box-sizing: border-box;
  	padding-bottom: 10px;
  	padding-left: 15px;
  	background-color: #78acff;
@@ -112,16 +109,13 @@
 .whole_box {
  	display: -webkit-box;
  	display: -webkit-flex;
- 	display: -ms-flexbox;
  	display: flex;
  	-webkit-box-orient: vertical;
  	-webkit-box-direction: normal;
  	-webkit-flex-direction: column;
- 	    -ms-flex-direction: column;
  	        flex-direction: column;
  	-webkit-box-align: center;
  	-webkit-align-items: center;
- 	    -ms-flex-align: center;
  	        align-items: center;
 }
 .whole_box .container {
@@ -145,17 +139,14 @@
 .sWhole_box  .login_box{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-flow: column;
-	    -ms-flex-flow: column;
 	        flex-flow: column;
 	text-align: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	font-size: 18px;
 	font-weight: 500;
@@ -178,7 +169,6 @@
 	font-size: 12px;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	vertical-align: bottom;
 }
@@ -198,17 +188,14 @@
 .sWhole_box  .login_box{
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-flow: column;
-	    -ms-flex-flow: column;
 	        flex-flow: column;
 	text-align: center;
 	-webkit-box-align: center;
 	-webkit-align-items: center;
-	    -ms-flex-align: center;
 	        align-items: center;
 	font-size: 18px;
 	font-weight: 500;
@@ -227,7 +214,6 @@
 	font-size: 12px;
 	display: -webkit-box;
 	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
 	vertical-align: bottom;
 }

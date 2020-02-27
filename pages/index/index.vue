@@ -13,6 +13,9 @@
 				<view class="co-inputTimaTable">
 					<button type="primary" class="inputTimetable" @click="inputTimeTable">导入课表</button>
 				</view>
+				<view class="co-inputTimaTable">
+					<button type="primary" class="inputTimetable" style="top: 260rpx;" @click="reInputTimetable">重新导入</button>
+				</view>
 			</uni-drawer>
 			<view class="naviBar">
 				<view class="drawer" @click="displayDrewer">
@@ -23,21 +26,21 @@
 		</view>
 		<!-- 日期 -->
 		<view class="co-weekday">
-			<view class="weekdays" v-for="day in days" :style="day.isToday? 'background-color: #FFFFFF;' : ''">
+			<view class="weekdays" v-for="day in days" :style="day.isToday? 'background-color: #FFFFFF;' : ''" :key=''>
 				<text class="weekday" :style="day.isToday? 'font-size: 30rpx; color: #78acff; font-weight: 700': ''">{{day.weekday}}</text>
 				<text class="date">{{day.dates}}号</text>
 			</view>
 		</view>
 		<!-- 侧边栏——课时时间 -->
 		<view class="co-left">
-			<view class="class-time" v-for="classTime in classTimes">
+			<view class="class-time" v-for="classTime in classTimes" :key="1">
 				<text class="nth-class">{{classTime.nthClass}}</text>
 				<text class="time">{{classTime.time}}</text>
 			</view>
 		</view>
 		<!-- 课程 -->
 		<view class="co-classes">
-			<view class="co-class" v-for="(kc, index) in kcs">
+			<view class="co-class" v-for="(kc, index) in kcs" :key="index">
 				<!-- <view class="class" :style="kc ? 'background: linear-gradient(#F88536, #F8C336);' : ''"> -->
 				<view class="class" :style="{background: kc? background(index) : ''}">
 					{{kc}}
@@ -66,6 +69,7 @@
 				},
 				drawer: false,
 				week: "0",
+				// 渲染今天是几号周几
 				days: [{
 					weekday: "周日",
 					dates: '',
@@ -95,6 +99,7 @@
 					dates: '',
 					isToday: false
 				}],
+				// 渲染上课时间
 				classTimes: [{
 					nthClass: "1",
 					time: "8:20"
@@ -126,12 +131,17 @@
 					nthClass: "10",
 					time: "20:25"
 				}],
+				// 课程列表
 				kcs: []
 			}
 		},
 		onLoad() {
+			let userInfo = uni.getStorageSync('userInfo')
+			app.globalData.userInfo = userInfo
 			uni.showShareMenu()
 			var that = this
+			// 更新通知
+			that.Updata()
 			// 取出缓存本周日的日期
 			var Sunday = uni.getStorageSync('SundayDate')
 			// 取出缓存第几周
@@ -188,6 +198,25 @@
 			}
 		},
 		methods: {
+			// 重新导入课表
+			reInputTimetable(){
+				uni.clearStorageSync('timeTable')
+				this.inputTimeTable()
+			},
+			
+			// 更新通知
+			Updata(){
+				var firstEntity = uni.getStorageSync('firstEntity')
+				if(firstEntity == null){
+					uni.showModal({
+						title: '导入课表通知',
+						content: '由于教务在线系统的更换，小程序需要重新认证并重新导入课程表!',
+						showCancel: false
+					})
+					uni.setStorageSync('firstEntity', 1)
+				}
+			},
+			
 			// 导入课表
 			inputTimeTable(){
 				console.log(uni.getStorageSync('timeTable') ? '有缓存' : '没缓存')
@@ -209,14 +238,23 @@
 						uni.showModal({
 							title: "您尚未授权登录",
 							showCancel: false,
-							confirmText: "知道了"
+							confirmText: "知道了",
+							success() {
+								uni.switchTab({
+									url: '../user/user'
+								})
+							}
 						})
 					}else{
-						console.log('登录')
+						console.log('登录', app.globalData.userInfo.openid)
 						uni.requestWithCookie({
-							url: app.globalData.host + app.globalData.apiVersion + "api/timetable/" + "?TimeName=2019-2020-1&openid=" + app.globalData.userInfo.openid,
+							url: app.globalData.host + app.globalData.apiVersion + "api/newtimeTable/",
+							method: 'POST',
+							data: {
+								openid: app.globalData.userInfo.openid
+							},
 							success: function(e){
-								// console.log('信息：', e)
+								console.log('信息：', e)
 								if(e.statusCode==200 && e.data.code==0){
 									if(e.data.data){
 										// 解析课表
@@ -229,8 +267,14 @@
 										uni.hideLoading()
 										uni.showModal({
 											title: "导入成功",
-											showCancel: false,
-											confirmText: "知道了"
+											content: '是否把小程序加入手机桌面方便快速启动？',
+											cancelText: '算了',
+											confirmText: "知道了",
+											success(res) {
+												if(res.confirm){
+													qq.saveAppToDesktop()
+												}
+											}
 										})
 									}else{
 										uni.hideLoading()
@@ -243,9 +287,15 @@
 								}else{
 									uni.hideLoading()
 									uni.showModal({
-										title: "导入失败",
+										title: "尚未进行身份验证",
+										content: '您还没有身份验证呢，通过身份验证接入新教务系统之后我们才能为您服务！',
 										showCancel: false,
-										confirmText: "知道了"
+										confirmText: "立即认证",
+										complete() {
+											uni.navigateTo({
+												url: '../authentication/authentication'
+											})
+										}
 									})
 								}
 							}
@@ -285,10 +335,12 @@
 			},
 			// 解析课表
 			jiexiTimeTable(parseTimeTable){
+				console.log('课表', parseTimeTable[0])
 				var classes = []
 				var resolve = []
-				for(var index = 0; index < parseTimeTable.length; index++){
-					let timeClass = parseTimeTable[index]
+				// 如果是老课表，把这里的[0]去掉
+				for(var index = 0; index < parseTimeTable[0].length; index++){
+					let timeClass = parseTimeTable[0][index]
 					let classTime = Object.keys(timeClass)
 					let someClasses = Object.values(timeClass)
 					if(!someClasses[0]){
@@ -327,6 +379,7 @@
 					}
 					// console.log(kc)
 					// console.log(weeks)
+					// 最后返回的是字符串 
 					for(var t = 0; t < 7; t++){
 						var txt = ''
 						for(var y = 0; y < kc.length; y++){

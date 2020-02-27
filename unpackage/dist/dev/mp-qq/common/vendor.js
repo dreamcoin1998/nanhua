@@ -241,7 +241,7 @@ var promiseInterceptor = {
 
 
 var SYNC_API_RE =
-/^\$|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
+/^\$|restoreGlobal|getCurrentSubNVue|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64/;
 
 var CONTEXT_API_RE = /^create|Manager$/;
 
@@ -354,6 +354,7 @@ var interceptors = {
 
 
 var baseApi = /*#__PURE__*/Object.freeze({
+  __proto__: null,
   upx2px: upx2px,
   interceptors: interceptors,
   addInterceptor: addInterceptor,
@@ -398,49 +399,41 @@ var protocols = {
   previewImage: previewImage };
 
 var todos = [
-'createLivePlayerContext',
-'createLivePusherContext',
-'loadFontFace',
-'onMemoryWarning',
-'onNetworkStatusChange',
-'startBeaconDiscovery',
-'stopBeaconDiscovery',
-'getBeacons',
-'onBeaconUpdate',
-'onBeaconServiceChange',
-'addPhoneContact',
-'getHCEState',
-'startHCE',
-'stopHCE',
-'onHCEMessage',
-'sendHCEMessage',
-'startWifi',
-'stopWifi',
-'connectWifi',
-'getWifiList',
-'onGetWifiList',
-'setWifiList',
-'onWifiConnected',
-'getConnectedWifi',
-'setNavigationBarColor',
-'setTopBarText',
-'getExtConfig',
-'getExtConfigSync',
-'getPhoneNumber',
-'chooseAddress',
-'addCard',
-'openCard',
-'getWeRunData',
-'launchApp',
-'chooseInvoiceTitle',
-'checkIsSupportSoterAuthentication',
-'startSoterAuthentication',
-'checkIsSoterEnrolledInDevice',
-'reportMonitor',
-'getLogManager',
-'reportAnalytics',
-'vibrate'];
-
+  // 'startBeaconDiscovery',
+  // 'stopBeaconDiscovery',
+  // 'getBeacons',
+  // 'onBeaconUpdate',
+  // 'onBeaconServiceChange',
+  // 'addPhoneContact',
+  // 'getHCEState',
+  // 'startHCE',
+  // 'stopHCE',
+  // 'onHCEMessage',
+  // 'sendHCEMessage',
+  // 'startWifi',
+  // 'stopWifi',
+  // 'connectWifi',
+  // 'getWifiList',
+  // 'onGetWifiList',
+  // 'setWifiList',
+  // 'onWifiConnected',
+  // 'getConnectedWifi',
+  // 'setTopBarText',
+  // 'getPhoneNumber',
+  // 'chooseAddress',
+  // 'addCard',
+  // 'openCard',
+  // 'getWeRunData',
+  // 'launchApp',
+  // 'chooseInvoiceTitle',
+  // 'checkIsSupportSoterAuthentication',
+  // 'startSoterAuthentication',
+  // 'checkIsSoterEnrolledInDevice',
+  // 'vibrate',
+  // 'loadFontFace',
+  // 'getExtConfig',
+  // 'getExtConfigSync'
+];
 var canIUses = [
 'scanCode',
 'startAccelerometer',
@@ -464,7 +457,15 @@ var canIUses = [
 'onSocketClose',
 'openDocument',
 'updateShareMenu',
-'getShareInfo'];
+'getShareInfo',
+'createLivePlayerContext',
+'createLivePusherContext',
+'setNavigationBarColor',
+'onMemoryWarning',
+'onNetworkStatusChange',
+'reportMonitor',
+'getLogManager',
+'reportAnalytics'];
 
 
 var CALLBACKS = ['success', 'fail', 'cancel', 'complete'];
@@ -605,6 +606,7 @@ function getProvider(_ref2)
 }
 
 var extraApi = /*#__PURE__*/Object.freeze({
+  __proto__: null,
   getProvider: getProvider });
 
 
@@ -640,6 +642,7 @@ function $emit() {
 }
 
 var eventApi = /*#__PURE__*/Object.freeze({
+  __proto__: null,
   $on: $on,
   $off: $off,
   $once: $once,
@@ -648,8 +651,8 @@ var eventApi = /*#__PURE__*/Object.freeze({
 
 
 
-var api = /*#__PURE__*/Object.freeze({});
-
+var api = /*#__PURE__*/Object.freeze({
+  __proto__: null });
 
 
 var MPPage = Page;
@@ -794,7 +797,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1145,6 +1148,18 @@ function handleEvent(event) {var _this = this;
           {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
             handlerCtx = handlerCtx.$parent.$parent;
           }
+          if (methodName === '$emit') {
+            handlerCtx.$emit.apply(handlerCtx,
+            processEventArgs(
+            _this.$vm,
+            event,
+            eventArray[1],
+            eventArray[2],
+            isCustom,
+            methodName));
+
+            return;
+          }
           var handler = handlerCtx[methodName];
           if (!isFn(handler)) {
             throw new Error(" _vm.".concat(methodName, " is not a function"));
@@ -1249,6 +1264,13 @@ function parseBaseApp(vm, _ref3)
 
   // 兼容旧版本 globalData
   appOptions.globalData = vm.$options.globalData || {};
+  // 将 methods 中的方法挂在 getApp() 中
+  var methods = vm.$options.methods;
+  if (methods) {
+    Object.keys(methods).forEach(function (name) {
+      appOptions[name] = methods[name];
+    });
+  }
 
   initHooks(appOptions, hooks);
 
@@ -1259,14 +1281,17 @@ var mocks = ['__route__', '__wxExparserNodeId__', '__wxWebviewId__'];
 
 function findVmByVueId(vm, vuePid) {
   var $children = vm.$children;
-  // 优先查找直属
-  var parentVm = $children.find(function (childVm) {return childVm.$scope._$vueId === vuePid;});
-  if (parentVm) {
-    return parentVm;
+  // 优先查找直属(反向查找:https://github.com/dcloudio/uni-app/issues/1200)
+  for (var i = $children.length - 1; i >= 0; i--) {
+    var childVm = $children[i];
+    if (childVm.$scope._$vueId === vuePid) {
+      return childVm;
+    }
   }
   // 反向递归查找
-  for (var i = $children.length - 1; i >= 0; i--) {
-    parentVm = findVmByVueId($children[i], vuePid);
+  var parentVm;
+  for (var _i = $children.length - 1; _i >= 0; _i--) {
+    parentVm = findVmByVueId($children[_i], vuePid);
     if (parentVm) {
       return parentVm;
     }
@@ -1590,7 +1615,7 @@ uni$1;exports.default = _default;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/*!
- * Vue.js v2.6.10
+ * Vue.js v2.6.11
  * (c) 2014-2019 Evan You
  * Released under the MIT License.
  */
@@ -2289,7 +2314,13 @@ var uid = 0;
  * directives subscribing to it.
  */
 var Dep = function Dep () {
-  this.id = uid++;
+  // fixed by xxxxxx (nvue vuex)
+  /* eslint-disable no-undef */
+  if(typeof SharedObject !== 'undefined'){
+    this.id = SharedObject.uid++;
+  } else {
+    this.id = uid++;
+  }
   this.subs = [];
 };
 
@@ -3553,7 +3584,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   };
 } else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
   // Fallback to setImmediate.
-  // Techinically it leverages the (macro) task queue,
+  // Technically it leverages the (macro) task queue,
   // but it is still a better choice than setTimeout.
   timerFunc = function () {
     setImmediate(flushCallbacks);
@@ -3619,7 +3650,7 @@ if (true) {
     warn(
       "Property \"" + key + "\" must be accessed with \"$data." + key + "\" because " +
       'properties starting with "$" or "_" are not proxied in the Vue instance to ' +
-      'prevent conflicts with Vue internals' +
+      'prevent conflicts with Vue internals. ' +
       'See: https://vuejs.org/v2/api/#data',
       target
     );
@@ -3819,17 +3850,48 @@ function updateListeners (
 
 /*  */
 
+// fixed by xxxxxx (mp properties)
+function extractPropertiesFromVNodeData(data, Ctor, res, context) {
+  var propOptions = Ctor.options.mpOptions && Ctor.options.mpOptions.properties;
+  if (isUndef(propOptions)) {
+    return res
+  }
+  var externalClasses = Ctor.options.mpOptions.externalClasses || [];
+  var attrs = data.attrs;
+  var props = data.props;
+  if (isDef(attrs) || isDef(props)) {
+    for (var key in propOptions) {
+      var altKey = hyphenate(key);
+      var result = checkProp(res, props, key, altKey, true) ||
+          checkProp(res, attrs, key, altKey, false);
+      // externalClass
+      if (
+        result &&
+        res[key] &&
+        externalClasses.indexOf(altKey) !== -1 &&
+        context[camelize(res[key])]
+      ) {
+        // 赋值 externalClass 真正的值(模板里 externalClass 的值可能是字符串)
+        res[key] = context[camelize(res[key])];
+      }
+    }
+  }
+  return res
+}
+
 function extractPropsFromVNodeData (
   data,
   Ctor,
-  tag
+  tag,
+  context// fixed by xxxxxx
 ) {
   // we are only extracting raw values here.
   // validation and default values are handled in the child
   // component itself.
   var propOptions = Ctor.options.props;
   if (isUndef(propOptions)) {
-    return
+    // fixed by xxxxxx
+    return extractPropertiesFromVNodeData(data, Ctor, {}, context)
   }
   var res = {};
   var attrs = data.attrs;
@@ -3857,7 +3919,8 @@ function extractPropsFromVNodeData (
       checkProp(res, attrs, key, altKey, false);
     }
   }
-  return res
+  // fixed by xxxxxx
+  return extractPropertiesFromVNodeData(data, Ctor, res, context)
 }
 
 function checkProp (
@@ -4190,12 +4253,12 @@ function renderList (
   if (Array.isArray(val) || typeof val === 'string') {
     ret = new Array(val.length);
     for (i = 0, l = val.length; i < l; i++) {
-      ret[i] = render(val[i], i);
+      ret[i] = render(val[i], i, i, i); // fixed by xxxxxx
     }
   } else if (typeof val === 'number') {
     ret = new Array(val);
     for (i = 0; i < val; i++) {
-      ret[i] = render(i + 1, i);
+      ret[i] = render(i + 1, i, i, i); // fixed by xxxxxx
     }
   } else if (isObject(val)) {
     if (hasSymbol && val[Symbol.iterator]) {
@@ -4203,7 +4266,7 @@ function renderList (
       var iterator = val[Symbol.iterator]();
       var result = iterator.next();
       while (!result.done) {
-        ret.push(render(result.value, ret.length));
+        ret.push(render(result.value, ret.length, i++, i)); // fixed by xxxxxx
         result = iterator.next();
       }
     } else {
@@ -4211,7 +4274,7 @@ function renderList (
       ret = new Array(keys.length);
       for (i = 0, l = keys.length; i < l; i++) {
         key = keys[i];
-        ret[i] = render(val[key], key, i);
+        ret[i] = render(val[key], key, i, i); // fixed by xxxxxx
       }
     }
   }
@@ -4246,7 +4309,8 @@ function renderSlot (
       }
       props = extend(extend({}, bindObject), props);
     }
-    nodes = scopedSlotFn(props) || fallback;
+    // fixed by xxxxxx app-plus scopedSlot
+    nodes = scopedSlotFn(props, this, props._i) || fallback;
   } else {
     nodes = this.$slots[name] || fallback;
   }
@@ -4474,7 +4538,7 @@ function bindDynamicKeys (baseObj, values) {
     if (typeof key === 'string' && key) {
       baseObj[values[i]] = values[i + 1];
     } else if ( true && key !== '' && key !== null) {
-      // null is a speical value for explicitly removing a binding
+      // null is a special value for explicitly removing a binding
       warn(
         ("Invalid value for dynamic directive argument (expected string or null): " + key),
         this
@@ -4698,6 +4762,8 @@ var componentVNodeHooks = {
     var context = vnode.context;
     var componentInstance = vnode.componentInstance;
     if (!componentInstance._isMounted) {
+      callHook(componentInstance, 'onServiceCreated');
+      callHook(componentInstance, 'onServiceAttached');
       componentInstance._isMounted = true;
       callHook(componentInstance, 'mounted');
     }
@@ -4787,7 +4853,7 @@ function createComponent (
   }
 
   // extract props
-  var propsData = extractPropsFromVNodeData(data, Ctor, tag);
+  var propsData = extractPropsFromVNodeData(data, Ctor, tag, context); // fixed by xxxxxx
 
   // functional component
   if (isTrue(Ctor.options.functional)) {
@@ -4970,6 +5036,12 @@ function _createElement (
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
     if (config.isReservedTag(tag)) {
       // platform built-in elements
+      if ( true && isDef(data) && isDef(data.nativeOn)) {
+        warn(
+          ("The .native modifier for v-on is only valid on components but it was used on <" + tag + ">."),
+          context
+        );
+      }
       vnode = new VNode(
         config.parsePlatformTagName(tag), data, children,
         undefined, undefined, context
@@ -5095,7 +5167,7 @@ function renderMixin (Vue) {
     // render self
     var vnode;
     try {
-      // There's no need to maintain a stack becaues all render fns are called
+      // There's no need to maintain a stack because all render fns are called
       // separately from one another. Nested component's render fns are called
       // when parent component is patched.
       currentRenderingInstance = vm;
@@ -5630,7 +5702,10 @@ function updateChildComponent (
     // keep a copy of raw propsData
     vm.$options.propsData = propsData;
   }
-
+  
+  // fixed by xxxxxx update properties(mp runtime)
+  vm._$updateProperties && vm._$updateProperties(vm);
+  
   // update listeners
   listeners = listeners || emptyObject;
   var oldListeners = vm.$options._parentListeners;
@@ -6949,7 +7024,7 @@ Object.defineProperty(Vue, 'FunctionalRenderContext', {
   value: FunctionalRenderContext
 });
 
-Vue.version = '2.6.10';
+Vue.version = '2.6.11';
 
 /**
  * https://raw.githubusercontent.com/Tencent/westore/master/packages/westore/utils/diff.js
@@ -7062,7 +7137,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7083,14 +7158,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7166,7 +7241,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-qq","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-qq","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7339,7 +7414,13 @@ function getTarget(obj, path) {
 function internalMixin(Vue) {
 
   Vue.config.errorHandler = function(err) {
-    console.error(err);
+    /* eslint-disable no-undef */
+    var app = getApp();
+    if (app && app.onError) {
+      app.onError(err);
+    } else {
+      console.error(err);
+    }
   };
 
   var oldEmit = Vue.prototype.$emit;
@@ -7359,9 +7440,21 @@ function internalMixin(Vue) {
 
   MP_METHODS.forEach(function (method) {
     Vue.prototype[method] = function(args) {
-      if (this.$scope) {
+      if (this.$scope && this.$scope[method]) {
         return this.$scope[method](args)
       }
+      // mp-alipay
+      if (typeof my === 'undefined') {
+        return
+      }
+      if (method === 'createSelectorQuery') {
+        /* eslint-disable no-undef */
+        return my.createSelectorQuery(args)
+      } else if (method === 'createIntersectionObserver') {
+        /* eslint-disable no-undef */
+        return my.createIntersectionObserver(args)
+      }
+      // TODO mp-alipay 暂不支持 selectAllComponents,selectComponent
     };
   });
 
@@ -7382,7 +7475,7 @@ function internalMixin(Vue) {
       }
     }
     if (vm._hasHookEvent) {
-      vm.$emit('hook:' + hook);
+      vm.$emit('hook:' + hook, args);
     }
     popTarget();
     return ret
@@ -8476,7 +8569,7 @@ main();
 /*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-24220191115004","_inBundle":false,"_integrity":"sha512-UKnpiHSP7h9c5IFpJFkWkpm1KyWz9iHj1hchrQSUxPhChx+KPOmunnQcKGiQvvBz9CeSi7Se/eauJYha5ch0kw==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-24220191115004.tgz","_shasum":"5848f2204f37daaf8c340fb27d9f76b16fcbfdeb","_spec":"@dcloudio/uni-stat@next","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"bcf65737c5111d47398695d3db8ed87305df346e","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-24220191115004"};
+module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2.0.0-alpha-25120200103005","_inBundle":false,"_integrity":"sha512-nYoIrRV2e5o/vzr6foSdWi3Rl2p0GuO+LPY3JctyY6uTKgPnuH99d7aL/QQdJ1SacQjBWO+QGK1qankN7oyrWw==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@alpha","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"alpha","saveSpec":null,"fetchSpec":"alpha"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-alpha-25120200103005.tgz","_shasum":"a77a63481f36474f3e86686868051219d1bb12df","_spec":"@dcloudio/uni-stat@alpha","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/alpha/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"6be187a3dfe15f95dd6146d9fec08e1f81100987","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-alpha-25120200103005"};
 
 /***/ }),
 /* 7 */
@@ -8487,7 +8580,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom" }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom" }, "pages/treasure/treasure": { "navigationStyle": "custom" }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领" }, "pages/treasure/lostThing/lostPublish/lostPublish": { "navigationBarTitleText": "发布信息" }, "pages/fangle/fangle": { "navigationStyle": "custom" }, "pages/treasure/cetQuery/cetQuery": {}, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩" }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarBackgroundColor": "#78acff" }, "pages/treasure/scoreSystem/scoreSystem": {}, "pages/treasure/honestyUmbrella/honestyUmbrella": {}, "pages/treasure/library/library": {}, "pages/treasure/bookSearch/bookSearch": {}, "pages/treasure/repair/repair": {}, "pages/treasure/loginLibrary/loginLibrary": {}, "pages/treasure/phoneList/phoneDetail2/phoneDetail2": {}, "pages/treasure/phoneList/phoneDetail3/phoneDetail3": {}, "pages/treasure/phoneList/phoneDetail4/phoneDetail4": {}, "pages/treasure/phoneList/phoneDetail5/phoneDetail5": {}, "pages/treasure/phoneList/phoneDetail6/phoneDetail6": {}, "pages/treasure/phoneList/phoneDetail1/phoneDetail1": {}, "pages/user/user": { "navigationStyle": "custom" }, "pages/about/about": { "navigationBarTitleText": "关于" }, "pages/myCollection/myCollection": { "navigationBarTitleText": "" }, "pages/myWorkOrder/myWorkOrder": { "navigationBarTitleText": "" }, "pages/myFriends/myFriends": { "navigationBarTitleText": "" }, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": { "navigationBarTitleText": "" }, "pages/treasure/schoolWiFi/schoolWiFi": { "navigationBarTitleText": "" }, "pages/treasure/schoolMap/schoolMap": { "navigationBarTitleText": "" }, "pages/treasure/phoneList/phoneList": { "navigationBarTitleText": "" }, "pages/treasure/schoolProgram/schoolProgram": {}, "pages/treasure/schoolPicture/schoolPicture": {}, "pages/treasure/scoreSystem/queryByscore/queryByscore": {}, "pages/treasure/scoreSystem/seatOrder/seatOrder": { "navigationBarBackgroundColor": "#78acff" }, "pages/treasure/scoreSystem/carrerTest/carrerTest": {} }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "课程表", "navigationStyle": "custom", "usingComponents": { "uni-drawer": "/components/uni-drawer/uni-drawer", "uni-number-box": "/components/uni-number-box/uni-number-box" }, "usingAutoImportComponents": {} }, "pages/authentication/authentication": { "navigationBarTitleText": "教务在线登陆验证", "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/treasure": { "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/lostThing/lostThing": { "navigationBarTitleText": "失物招领", "usingComponents": { "lost-thing": "/pages/template/lostThingModal" }, "usingAutoImportComponents": {} }, "pages/treasure/lostThing/lostPublish/lostPublish": { "navigationBarTitleText": "发布信息", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/fangle/fangle": { "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/cetQuery/cetQuery": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/cetScore/cetScore": { "navigationBarTitleText": "四六级成绩", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/reviewLesson/reviewLesson": { "navigationBarBackgroundColor": "#78acff", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/scoreSystem/scoreSystem": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/honestyUmbrella/honestyUmbrella": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/library/library": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/bookSearch/bookSearch": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/repair/repair": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/loginLibrary/loginLibrary": { "usingComponents": { "login-module": "/pages/template/loginModule" }, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail2/phoneDetail2": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail3/phoneDetail3": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail4/phoneDetail4": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail5/phoneDetail5": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail6/phoneDetail6": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneDetail1/phoneDetail1": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/user": { "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/about/about": { "navigationBarTitleText": "关于", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/myCollection/myCollection": { "navigationBarTitleText": "", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/myWorkOrder/myWorkOrder": { "navigationBarTitleText": "", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/myFriends/myFriends": { "navigationBarTitleText": "", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/scoreSystem/scoreLogin/scoreLogin": { "navigationBarTitleText": "", "usingComponents": { "login-module": "/pages/template/loginModule", "wyj-text-code": "/components/wyj-text-code/wyj-text-code" }, "usingAutoImportComponents": {} }, "pages/treasure/schoolWiFi/schoolWiFi": { "navigationBarTitleText": "", "usingComponents": { "login-module": "/pages/template/loginModule" }, "usingAutoImportComponents": {} }, "pages/treasure/schoolMap/schoolMap": { "navigationBarTitleText": "", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/phoneList/phoneList": { "navigationBarTitleText": "", "usingComponents": { "login-module": "/pages/template/loginModule" }, "usingAutoImportComponents": {} }, "pages/treasure/schoolProgram/schoolProgram": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/schoolPicture/schoolPicture": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/scoreSystem/queryByscore/queryByscore": { "usingComponents": { "login-module": "/pages/template/loginModule" }, "usingAutoImportComponents": {} }, "pages/treasure/scoreSystem/seatOrder/seatOrder": { "navigationBarBackgroundColor": "#78acff", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/treasure/scoreSystem/carrerTest/carrerTest": { "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "white", "navigationBarTitleText": "", "navigationBarBackgroundColor": "#78acff", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
@@ -11872,9 +11965,9 @@ module.exports = {
 /* 17 */,
 /* 18 */,
 /* 19 */
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \********************************************************************/
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11895,12 +11988,26 @@ function normalizeComponent (
   injectStyles,
   scopeId,
   moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
 ) {
   // Vue.extend constructor export interop
   var options = typeof scriptExports === 'function'
     ? scriptExports.options
     : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    options.components = Object.assign(components, options.components || {})
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
 
   // render functions
   if (render) {

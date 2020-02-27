@@ -5,13 +5,13 @@
 		globalData: {
 			userInfo: null,
 			host: "https://qq.gaoblog.cn/",
-			// host: "http://127.0.0.1:8000/",
+			// host: "http://192.168.0.122:8000/",
 			apiVersion: "v1.0/"
 		},
 		onLaunch: function() {
-			uni.setStorageSync('SundayDate', '2019-11-17')
-			uni.setStorageSync('nthWeek', '13')
-			console.log('App Launch')	
+			uni.setStorageSync('SundayDate', '2020-02-16')
+			uni.setStorageSync('nthWeek', '2')
+			console.log('App Launch')
 			var that = this
 			// console.log(that.$options.globalData)
 			that.$options.getUserInfoByAuthorize()

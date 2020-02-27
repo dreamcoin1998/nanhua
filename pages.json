@@ -197,17 +197,7 @@
 	        "iconPath": "static/timetable.png",
 	        "selectedIconPath": "static/timetable_click.png",
 	        "text": "课程表"
-	    }, {
-	        "pagePath": "pages/fangle/fangle",
-	        "iconPath": "static/fangle.png",
-	        "selectedIconPath": "static/fangle_click.png",
-	        "text": "新鲜事"
 	    },{
-			"pagePath": "pages/treasure/treasure",
-			"iconPath": "static/treasure.png",
-			"selectedIconPath": "static/treasure_click.png",
-			"text": "百宝箱"
-		},{
 			"pagePath": "pages/user/user",
 			"iconPath": "static/user.png",
 			"selectedIconPath": "static/user_click.png",

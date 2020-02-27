@@ -5,8 +5,8 @@
 			<view class="nickNamePosition big-white-bold">
 				{{userInfo? userInfo.nickName : "未授权"}}
 			</view>
-			<view class="statusPosition small-white-bold" v-if="!userInfo.is_auth">(身份未认证)</view>
-			<view class="statusPosition small-white-bold" v-if="userInfo.is_auth">是个真正的南华人</view>
+			<view class="statusPosition small-white-bold" v-if="!userInfo.is_auth_new">(身份未认证)</view>
+			<view class="statusPosition small-white-bold" v-if="userInfo.is_auth_new">是个真正的南华人</view>
 			<view class="avatarPosition" v-if="userInfo">
 				<image :src="userInfo.avatarUrl" mode="" class="avatar-image"></image>
 				<button open-type="getUserInfo" @getuserinfo="onGotUserInfo" class="avatar-button"></button>
@@ -35,6 +35,8 @@
 				</view>
 			</view>
 		</view>
+		<!-- 广告 -->
+		<ad unit-id="ba9bced5701639ddc25874ddcc106a61" style="margin-top: 100rpx;"></ad>
 	</view>
 </template>
 
@@ -103,7 +105,7 @@
 			navigato(index){
 				if(index==0){
 					// 已经验证过的不可验证
-					if(this.userInfo.is_auth){
+					if(this.userInfo.is_auth_new){
 						uni.showModal({
 							title: '您已经验证过',
 							content: "不要重复验证哟",
@@ -187,6 +189,7 @@
 					console.log(result.data.data.openid)
 					// 将openid存入缓存
 					uni.setStorageSync('openid', result.data.data.openid)
+					uni.setStorageSync('userInfo', result.data.data)
 					app.globalData.userInfo = result.data.data
 					this.userInfo = app.globalData.userInfo
 					uni.hideLoading()

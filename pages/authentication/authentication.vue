@@ -6,7 +6,7 @@
 		</view>
 		<!-- tip部分 -->
 		<view class="co-tip">
-			<view class="tip">登录南华大学教务在线</view>
+			<view class="tip">登录南华大学新版教务在线</view>
 		</view>
 		<!-- 输入框部分 -->
 		<view class="co-co-input">
@@ -59,7 +59,7 @@
 					let openid = uni.getStorageSync('openid')
 					// console.log("sessionid=" + cookies.get('sessionid'))
 					uni.requestWithCookie({
-						url: app.globalData.host + app.globalData.apiVersion + "auth/yonghu_yz/" + openid + '/',
+						url: app.globalData.host + app.globalData.apiVersion + "auth/yonghu_yz_new/" + openid + '/',
 						method: "PUT",
 						data: {
 							UserName: that.username,
