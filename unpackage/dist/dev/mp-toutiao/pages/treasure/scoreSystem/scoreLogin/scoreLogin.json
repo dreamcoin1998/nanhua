@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "usingComponents": {
-    "login-module": "/pages/template/loginModule",
-    "wyj-text-code": "/components/wyj-text-code/wyj-text-code"
-  }
-}

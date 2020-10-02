@@ -9,8 +9,8 @@
 			apiVersion: "v1.0/"
 		},
 		onLaunch: function() {
-			uni.setStorageSync('SundayDate', '2020-02-16')
-			uni.setStorageSync('nthWeek', '2')
+			uni.setStorageSync('SundayDate', '2020-09-29')
+			uni.setStorageSync('nthWeek', '5')
 			console.log('App Launch')
 			var that = this
 			// console.log(that.$options.globalData)

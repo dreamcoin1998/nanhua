@@ -1,1 +1,0 @@
-<view>collection</view>
