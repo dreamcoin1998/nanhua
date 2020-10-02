@@ -1,1 +1,0 @@
-<view><map style="width:100%;"></map></view>

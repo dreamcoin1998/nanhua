@@ -1,1 +1,0 @@
-<view>friends</view>
